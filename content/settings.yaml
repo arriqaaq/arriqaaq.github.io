@@ -1,0 +1,29 @@
+title: Arriqaaq
+description: >-
+  An online creative space for authentic islamic courses, articles, crafts,
+  education and technology
+logo: /images/2021/04/Arriqaaq-1.png
+icon: /images/2021/04/Flower-Fern-Business-logo-2.png
+cover_image: https://static.ghost.org/v4.0.0/images/publication-cover.jpg
+navigation:
+  - url: /
+    label: Home
+  - url: /courses/
+    label: Courses
+  - url: /magazine/
+    label: Magazine
+  - url: https://www.instagram.com/arriqaaq/
+    label: Instagram
+  - url: /about/
+    label: About
+  - url: /lettersfromthesoul/
+    label: Letters From The Soul
+  - url: https://health.arriqaaq.com/
+    label: Health
+  - url: https://www.code.arriqaaq.com/
+    label: Coding Bootcamp
+secondary_navigation:
+  - label: Data & privacy
+    url: /privacy/
+  - label: Contact
+    url: /contact/

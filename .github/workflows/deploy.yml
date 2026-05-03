@@ -1,0 +1,66 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache Drive images
+        id: img-cache
+        uses: actions/cache@v4
+        with:
+          path: static/images
+          key: drive-images-${{ vars.DRIVE_FOLDER_ID || '1IWgjywo_HX8Lw_MTDdzXoqIWW6f9x1oC' }}-v1
+
+      - name: Install gdown (cache miss only)
+        if: steps.img-cache.outputs.cache-hit != 'true'
+        run: pip install --quiet gdown
+
+      - run: npm ci
+
+      - name: Build site
+        env:
+          BASE_PATH: ''
+          DRIVE_FOLDER_ID: ${{ vars.DRIVE_FOLDER_ID || '1IWgjywo_HX8Lw_MTDdzXoqIWW6f9x1oC' }}
+          PUBLIC_GISCUS_REPO: ${{ vars.PUBLIC_GISCUS_REPO }}
+          PUBLIC_GISCUS_REPO_ID: ${{ vars.PUBLIC_GISCUS_REPO_ID }}
+          PUBLIC_GISCUS_CATEGORY: ${{ vars.PUBLIC_GISCUS_CATEGORY }}
+          PUBLIC_GISCUS_CATEGORY_ID: ${{ vars.PUBLIC_GISCUS_CATEGORY_ID }}
+        run: npm run build
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

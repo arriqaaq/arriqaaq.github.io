@@ -1,0 +1,35 @@
+node_modules
+
+# Output
+.output
+.vercel
+.netlify
+.wrangler
+/.svelte-kit
+/build
+
+# Generated content (re-derivable from content/*.md at build time)
+/src/lib/generated/
+
+# Drive-hosted images (fetched at build time, not committed)
+/static/images/
+
+# Pagefind index (regenerated on build)
+/build/pagefind/
+
+# Archived Ghost export (kept for re-running migration; not needed at build)
+/data/archive/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
+!.env.example
+!.env.test
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*

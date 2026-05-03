@@ -1,0 +1,40 @@
+competition:
+  name: Competition
+poem:
+  name: Poem
+book:
+  name: Book
+islam:
+  name: Islam
+lifestyle:
+  name: Lifestyle
+wereverts:
+  name: WeReverts
+homeschooling:
+  name: Homeschooling
+magazine:
+  name: Magazine
+bloom:
+  name: Bloom
+covid19:
+  name: covid19
+podcast:
+  name: podcast
+doctalk:
+  name: doctalk
+events:
+  name: events
+ramadhan:
+  name: Ramadhan
+health:
+  name: Health
+coding:
+  name: Coding
+tafsir:
+  name: Tafsir
+fiqh:
+  name: Fiqh
+  description: Usul Al Fiqh Series Arriqaaq
+  feature_image: /images/2025/11/Screenshot-2025-11-04-at-8.17.54---AM.png
+tech:
+  name: tech
