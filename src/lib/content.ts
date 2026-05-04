@@ -3,13 +3,15 @@ import pagesRaw from './generated/pages.json';
 import tagsRaw from './generated/tags.json';
 import authorsRaw from './generated/authors.json';
 import settingsRaw from './generated/settings.json';
-import type { Author, Post, SiteSettings, Tag } from './types';
+import reportsRaw from './generated/reports.json';
+import type { Author, Post, Report, SiteSettings, Tag } from './types';
 
 export const posts = postsRaw as Post[];
 export const pages = pagesRaw as Post[];
 export const tags = tagsRaw as Tag[];
 export const authors = authorsRaw as Author[];
 export const settings = settingsRaw as SiteSettings;
+export const reports = reportsRaw as Report[];
 
 export const POSTS_PER_PAGE = 9;
 
@@ -19,6 +21,7 @@ const authorBySlug = new Map(authors.map((a) => [a.slug, a]));
 const authorById = new Map(authors.map((a) => [a.id, a]));
 const postBySlug = new Map(posts.map((p) => [p.slug, p]));
 const pageBySlug = new Map(pages.map((p) => [p.slug, p]));
+const reportBySlug = new Map(reports.map((r) => [r.slug, r]));
 
 export function getPost(slug: string): Post | undefined {
 	return postBySlug.get(slug);
@@ -58,6 +61,25 @@ export function resolveImage(src: string | null | undefined, base: string): stri
 	if (!src) return null;
 	if (/^https?:\/\//.test(src)) return src;
 	return base + src;
+}
+
+export function getReport(slug: string): Report | undefined {
+	return reportBySlug.get(slug);
+}
+
+export function reportsByTag(tagId: string): { report: Report; chapterIds: string[] }[] {
+	const out: { report: Report; chapterIds: string[] }[] = [];
+	for (const r of reports) {
+		const matchingChapters = r.chapters.filter(
+			(c) =>
+				(c.tag && tagBySlug.get(c.tag)?.id === tagId) ||
+				c.cards.some((card) => card.post?.tags.includes(tagId))
+		);
+		if (matchingChapters.length > 0) {
+			out.push({ report: r, chapterIds: matchingChapters.map((c) => c.id) });
+		}
+	}
+	return out;
 }
 
 export function adjacentPosts(post: Post): { prev: Post | null; next: Post | null } {

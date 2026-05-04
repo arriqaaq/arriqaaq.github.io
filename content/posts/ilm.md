@@ -12,6 +12,7 @@ tags:
 authors:
   - arriqaaq
 featured: true
+feature_image: /images/2026/04/Screenshot-2026-04-10-at-7.28.51---AM.png
 reading_time: 14
 ---
 

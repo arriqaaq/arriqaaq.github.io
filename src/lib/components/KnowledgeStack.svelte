@@ -11,7 +11,7 @@
 	};
 
 	const levels: Level[] = [
-		{ key: 'tajweed', label: 'Tajweed',        glyph: 'ط', from: '#f59e0b', to: '#b45309', shadow: '#d97706' },
+		{ key: 'tajweed', label: 'Tajweed',        glyph: 'ت', from: '#f59e0b', to: '#b45309', shadow: '#d97706' },
 		{ key: 'grammar', label: 'Grammar',        glyph: 'ن', from: '#3b82f6', to: '#1e3a8a', shadow: '#2563eb' },
 		{ key: 'aqeedah', label: 'Aqeedah',        glyph: 'ع', from: '#10b981', to: '#065f46', shadow: '#059669' },
 		{ key: 'hadith',  label: 'Usul al-Hadith', glyph: 'ح', from: '#8b5cf6', to: '#4c1d95', shadow: '#7c3aed' },

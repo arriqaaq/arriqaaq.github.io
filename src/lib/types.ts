@@ -50,3 +50,50 @@ export type SiteSettings = {
 	navigation: { label: string; url: string; mobile?: boolean }[];
 	secondary_navigation: { label: string; url: string; mobile?: boolean }[];
 };
+
+export type ReportTheme = 'light' | 'dark';
+export type ReportCardKind =
+	| 'cover'
+	| 'stat'
+	| 'quote'
+	| 'chart'
+	| 'callout'
+	| 'stat-chart';
+
+export type ReportCard = {
+	kind: ReportCardKind;
+	post: Post | null;
+	title: string | null;
+	eyebrow: string | null;
+	body_html: string | null;
+	feature_image: string | null;
+	bg: string;
+	theme: ReportTheme;
+	share: boolean;
+	rotation: number;
+	bullet: { value: number | string; unit: string | null } | null;
+	hash: string | null;
+};
+
+export type ReportChapter = {
+	id: string;
+	title: string;
+	nav_label: string;
+	nav_icon: string | null;
+	nav_index: number | null;
+	bg: string;
+	theme: ReportTheme;
+	tag: string | null;
+	show_in_stepper: boolean;
+	cards: ReportCard[];
+};
+
+export type Report = {
+	slug: string;
+	title: string;
+	subtitle: string | null;
+	published: string;
+	cover_image: string | null;
+	press_kit_url: string | null;
+	chapters: ReportChapter[];
+};
