@@ -7,6 +7,11 @@
 	import KnowledgeStack from '$lib/components/KnowledgeStack.svelte';
 	import Newsletter from '$lib/components/Newsletter.svelte';
 	import ReportPage from '$lib/components/report/ReportPage.svelte';
+	import SectionHeader from '$lib/components/SectionHeader.svelte';
+	import TopicGlyphs from '$lib/components/TopicGlyphs.svelte';
+	import ReleaseStack from '$lib/components/ReleaseStack.svelte';
+	import ArchiveLines from '$lib/components/ArchiveLines.svelte';
+	import NewsletterMark from '$lib/components/NewsletterMark.svelte';
 	import { themeClass } from '$lib/themeForTag';
 
 	let { data } = $props();
@@ -17,8 +22,6 @@
 	const heroPost = $derived(ordered[0] ?? null);
 	const cardPosts = $derived(ordered.slice(1, 4));
 	const listPosts = $derived(ordered.slice(4));
-
-	const tagline = 'A creative space for authentic Islamic articles, courses, and reflections on education, lifestyle, and technology.';
 </script>
 
 <svelte:head>
@@ -30,7 +33,7 @@
 	{@const firstChapter =
 		introReport.chapters.find((c) => c.show_in_stepper) ?? introReport.chapters[0]}
 	<section
-		class="report-inline"
+		class="report-inline theme--tajweed"
 		class:u-theme-light={firstChapter?.theme === 'light'}
 		class:u-theme-dark={firstChapter?.theme === 'dark'}
 		style:--page-bg={firstChapter?.bg}
@@ -46,21 +49,24 @@
 	</section>
 {/if}
 
-<section class="focus-split">
-	<div class="focus-copy">
-		<h2 class="focus-title">What we focus on<span class="hero-title-accent">.</span></h2>
-		<p class="focus-lede">
-			The deen, from first principles. The six foundations we cover: Tajweed, Grammar, Aqeedah,
-			Usul al-Hadith, Usul al-Fiqh, and Usul at-Tafsir — the roots before the branches.
-		</p>
-	</div>
-	<div class="focus-visual">
-		<KnowledgeStack />
-	</div>
+<section class="focus-split theme--tajweed">
+	<SectionHeader
+		heading="What we focus on"
+		lede="The deen, from first principles. The six foundations we cover: Tajweed, Grammar, Aqeedah, Usul al-Hadith, Usul al-Fiqh, and Usul at-Tafsir — the roots before the branches."
+		rail
+	>
+		{#snippet visual()}
+			<KnowledgeStack />
+		{/snippet}
+	</SectionHeader>
 </section>
 
-<section class="topic-strip">
-	<small class="topic-strip-heading">Read by topic</small>
+<section class="topic-strip theme--tajweed">
+	<SectionHeader heading="Browse by discipline">
+		{#snippet visual()}
+			<TopicGlyphs />
+		{/snippet}
+	</SectionHeader>
 	<div class="topic-grid">
 		{#each data.tags as t}
 			<a href={`${base}/tag/${t.slug}/`} class="topic-card {themeClass(t.slug)}">
@@ -79,7 +85,11 @@
 
 {#if cardPosts.length}
 	<section class="releases theme--tajweed">
-		<small class="releases-heading">Latest releases</small>
+		<SectionHeader heading="Latest from the desk" rail>
+			{#snippet visual()}
+				<ReleaseStack />
+			{/snippet}
+		</SectionHeader>
 		<div class="releases-grid">
 			{#each cardPosts as p}
 				<PostCardLarge post={p} />
@@ -90,9 +100,11 @@
 
 {#if listPosts.length}
 	<section class="intro-list theme--tajweed">
-		<aside class="intro-tagline">
-			<p>{tagline}</p>
-		</aside>
+		<SectionHeader heading="More reading" rail>
+			{#snippet visual()}
+				<ArchiveLines />
+			{/snippet}
+		</SectionHeader>
 		<div class="intro-list-feed">
 			{#each listPosts as p}
 				<PostCard post={p} />
@@ -108,7 +120,10 @@
 {/if}
 
 <section class="newsletter-callout theme--tajweed">
-	<h2>Get new posts in your inbox</h2>
-	<p>{settings.description}</p>
+	<SectionHeader heading="Get new posts in your inbox" lede={settings.description} rail>
+		{#snippet visual()}
+			<NewsletterMark />
+		{/snippet}
+	</SectionHeader>
 	<Newsletter />
 </section>

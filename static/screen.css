@@ -23,12 +23,12 @@
   --tajweed-from: #f59e0b; --tajweed-to: #b45309; --tajweed-shadow: #d97706;
   --fiqh-from:    #f43f5e; --fiqh-to:    #9f1239; --fiqh-shadow:    #e11d48;
 
-  /* Semantic accent — global default points to fiqh/rose */
-  --accent:        var(--fiqh-from);
-  --accent-deep:   var(--fiqh-to);
-  --accent-shadow: var(--fiqh-shadow);
-  --accent-soft:   #ffd1da;
-  --accent-bg:     #fff1f4;
+  /* Semantic accent — global default points to tajweed/gold */
+  --accent:        var(--tajweed-from);
+  --accent-deep:   var(--tajweed-to);
+  --accent-shadow: var(--tajweed-shadow);
+  --accent-soft:   #fde6b3;
+  --accent-bg:     #fff7e6;
   --fg-on-accent:  #ffffff;
 
   --green:        #15803d;
@@ -48,17 +48,22 @@
   --container-w:  1200px;
 
   --font-ui:       'Inter', system-ui, -apple-system, sans-serif;
-  --font-headline: 'Lora', 'Sorts Mill Goudy', Georgia, serif;
+  --font-headline: 'Inter', system-ui, -apple-system, sans-serif;
   --font-display:  'Inter', system-ui, sans-serif;
   --font-serif:    'Lora', 'Sorts Mill Goudy', Georgia, serif;
   --font-mono:     'Courier Prime', ui-monospace, 'Courier New', monospace;
+  --font-code:     'JetBrains Mono', ui-monospace, 'Courier New', monospace;
 }
 
 /* Theme overrides — apply on any wrapper to swap the accent. Two-tone system:
    maroon (default, brand) and gold (highlight). Every selector below targets
    var(--accent*), so descendants reskin automatically. */
 .theme--tajweed { --accent: var(--tajweed-from); --accent-deep: var(--tajweed-to); --accent-shadow: var(--tajweed-shadow); --accent-soft: #fde6b3; --accent-bg: #fff7e6; }
-.theme--fiqh    { --accent: var(--fiqh-from);    --accent-deep: var(--fiqh-to);    --accent-shadow: var(--fiqh-shadow);    --accent-soft: #ffd1da; --accent-bg: #fff1f4; }
+/* Pink/rose neutralized site-wide — fiqh-tagged content now resolves to the
+   same gold palette as everything else. The fiqh-* tokens still exist for
+   the cube's Fiqh face (KnowledgeStack uses them inline) and for any future
+   chapter-level use, but the site UI is single-tone gold. */
+.theme--fiqh    { --accent: var(--tajweed-from); --accent-deep: var(--tajweed-to); --accent-shadow: var(--tajweed-shadow); --accent-soft: #fde6b3; --accent-bg: #fff7e6; }
 
 /* 10.B Reset + base */
 *, *::before, *::after { box-sizing: border-box; }
@@ -377,14 +382,6 @@ img { max-width: 100%; height: auto; display: block; }
 
 /* Latest releases — three cards with title, excerpt, meta rows, CTA pill */
 .releases { margin: 64px 0 80px; }
-.releases-heading {
-  display: block;
-  font-family: var(--font-ui);
-  font-weight: 600;
-  font-size: 16px;
-  color: var(--accent);
-  margin-bottom: 20px;
-}
 .releases-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -462,32 +459,9 @@ img { max-width: 100%; height: auto; display: block; }
 @media (max-width: 1100px) { .releases-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 700px)  { .releases-grid { grid-template-columns: 1fr; } .release-card { min-height: 0; } }
 
-/* Intro tagline + post list — tagline on left, .post-row list on right */
-.intro-list {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 64px;
-  margin: 80px 0;
-  align-items: start;
-}
-.intro-tagline {
-  font-family: var(--font-ui);
-  font-weight: 600;
-  font-size: clamp(20px, 2vw, 28px);
-  line-height: 1.25;
-  letter-spacing: -0.01em;
-  color: var(--accent);
-  position: sticky;
-  top: calc(var(--topbar-h) + 32px);
-}
-.intro-tagline p { margin: 0; max-width: 22ch; }
+/* Intro post list — section header above, .post-row list below */
+.intro-list { margin: 80px 0; }
 .intro-list-feed { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
-
-@media (max-width: 900px) {
-  .intro-list { grid-template-columns: 1fr; gap: 24px; }
-  .intro-tagline { position: static; max-width: 36ch; }
-  .intro-tagline p { max-width: none; }
-}
 
 /* 10.J Chips (tag chip used in feed-item, post header, related) */
 .chip { display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-mono); font-size: 10px; padding: 2px 8px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid var(--accent); color: var(--accent-deep); background: var(--accent-bg); border-radius: 999px; }
@@ -495,7 +469,7 @@ img { max-width: 100%; height: auto; display: block; }
 
 /* 10.K Hero */
 .hero { padding: 96px 0 64px; }
-.hero-title { font-family: var(--font-headline); font-weight: 600; font-size: clamp(44px, 6vw, 88px); line-height: 1.05; letter-spacing: -0.02em; color: var(--accent); margin: 0 0 20px; max-width: 18ch; }
+.hero-title { font-family: var(--font-headline); font-weight: 800; font-size: clamp(44px, 6vw, 88px); line-height: 1.05; letter-spacing: -0.025em; color: var(--accent); margin: 0 0 20px; max-width: 18ch; }
 .hero-lede { font-family: var(--font-serif); font-size: 19px; line-height: 1.55; color: var(--ink-muted); max-width: 56ch; margin: 0 0 32px; }
 .hero-cta { display: inline-flex; gap: 12px; flex-wrap: wrap; }
 
@@ -507,10 +481,12 @@ img { max-width: 100%; height: auto; display: block; }
 .announcement-arrow { opacity: 0.6; }
 
 /* Centered hero — title + tagline only, fills the viewport */
-.hero--centered { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: calc(100vh - var(--topbar-h) - 64px); padding: 32px 0; }
-.hero--centered .hero-title { max-width: none; font-size: clamp(48px, 7vw, 104px); margin: 0 0 24px; }
-.hero--centered .hero-lede { max-width: 56ch; margin: 0 auto; }
-@media (max-width: 900px) { .hero--centered { min-height: 60vh; padding: 32px 0; } }
+/* Fallback hero — only shown if the slideshow report is missing. Styled
+   as a single cover-card so the degraded state matches .report-card-cover-title. */
+.hero--centered { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: calc(100vh - var(--topbar-h) - 64px); padding: 56px 24px; background: var(--accent-bg); border-radius: var(--radius); margin: 32px 0; }
+.hero--centered .hero-title { max-width: 18ch; font-size: clamp(48px, 7vw, 104px); margin: 0 0 24px; line-height: 1.05; letter-spacing: -0.025em; }
+.hero--centered .hero-lede { max-width: 56ch; margin: 0 auto; font-size: clamp(17px, 2.2vw, 21px); }
+@media (max-width: 900px) { .hero--centered { min-height: 60vh; padding: 48px 20px; } }
 
 /* Split hero — image bleeds to viewport's right edge (legacy, unused) */
 .hero--split { display: grid; grid-template-columns: minmax(0, 460px) 1fr; gap: 56px; align-items: center; padding: 32px 0 48px; min-height: calc(100vh - var(--topbar-h) - 64px); }
@@ -523,18 +499,20 @@ img { max-width: 100%; height: auto; display: block; }
 @media (max-width: 900px) { .hero-cover { max-width: 320px; height: auto; aspect-ratio: 1 / 1; margin-inline: auto; border-radius: 18px; box-shadow: 0 24px 60px -32px color-mix(in srgb, var(--accent) 35%, transparent); } }
 @media (max-width: 600px) { .hero-cover { max-width: min(100%, 280px); } }
 
-/* What we focus on — relocated KnowledgeStack with framing copy.
+/* What we focus on — KnowledgeStack with framing copy via SectionHeader.
    White bg so it doesn't double up on the accent wash above it. */
-.focus-split { display: grid; grid-template-columns: 1.15fr 1fr; gap: 56px; align-items: center; padding: 72px 0 88px; background: #ffffff; }
+.focus-split { padding: 72px 0 88px; background: #ffffff; }
 @media (max-width: 900px) {
-  .focus-split { grid-template-columns: 1fr; gap: 80px; padding: 56px 0 64px; }
-  /* Cube has an upward halo/glow; push the visual down so it doesn't bleed into the text. */
-  .focus-visual { margin-top: 24px; }
+  .focus-split { padding: 56px 0 64px; }
 }
-.focus-copy { min-width: 0; }
-.focus-title { font-family: var(--font-headline); font-weight: 600; font-size: clamp(32px, 5vw, 72px); line-height: 1.06; letter-spacing: -0.02em; color: var(--accent); margin: 0 0 16px; max-width: 16ch; }
-.focus-lede { font-family: var(--font-serif); font-size: clamp(15px, 1.8vw, 19px); line-height: 1.5; color: var(--ink-muted); max-width: 56ch; margin: 0; }
-.focus-visual { min-width: 0; display: flex; justify-content: center; }
+/* Section already has 72px padding; SectionHeader's own 64px top margin
+   would double up. Cube and text both top-align inside the grid. */
+.focus-split .section-header { margin-top: 0; }
+/* When the layout stacks on mobile, the cube's upward 3D halo would
+   bleed into the lede above. Give it clearance only there. */
+@media (max-width: 700px) {
+  .focus-split .section-visual { margin-top: 64px; }
+}
 
 .hero-card { display: block; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; transition: border-color 180ms, box-shadow 180ms, transform 180ms; }
 .hero-card:hover { border-color: var(--ink); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
@@ -542,12 +520,11 @@ img { max-width: 100%; height: auto; display: block; }
 .hero-card-image img { width: 100%; height: 100%; object-fit: cover; }
 .hero-card-body { padding: 20px 22px; }
 .hero-card-eyebrow { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--accent); }
-.hero-card-title { font-family: var(--font-headline); font-weight: 600; font-size: 24px; line-height: 1.2; margin: 8px 0 12px; color: var(--ink); letter-spacing: -0.01em; }
+.hero-card-title { font-family: var(--font-headline); font-weight: 700; font-size: 24px; line-height: 1.2; margin: 8px 0 12px; color: var(--ink); letter-spacing: -0.015em; }
 .hero-card-meta { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.1em; }
 
 /* Topic strip */
-.topic-strip { padding: 32px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin: 32px 0 48px; }
-.topic-strip-heading { display: block; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-muted); margin-bottom: 16px; }
+.topic-strip { padding: 32px 0 48px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin: 32px 0 48px; }
 .topic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; }
 .topic-card { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border: 1px solid var(--line); border-radius: var(--radius-sm); font-size: 13px; color: var(--ink); transition: border-color 120ms, background 120ms; background: var(--surface); }
 .topic-card:hover { border-color: var(--accent); background: var(--accent-bg); color: var(--ink); }
@@ -558,9 +535,10 @@ img { max-width: 100%; height: auto; display: block; }
 .featured-section { margin: 48px 0 0; }
 
 /* Newsletter callout */
-.newsletter-callout { position: relative; background: var(--surface); border: 1px solid var(--line); border-top: 2px solid var(--accent); border-radius: var(--radius); padding: 56px 32px; margin: 80px 0; text-align: center; }
-.newsletter-callout h2 { font-family: var(--font-headline); font-weight: 600; font-size: clamp(28px, 4vw, 40px); margin: 0 0 12px; letter-spacing: -0.02em; color: var(--ink); }
-.newsletter-callout p { font-family: var(--font-serif); font-size: 17px; color: var(--ink-muted); margin: 0 auto 24px; max-width: 56ch; line-height: 1.6; }
+.newsletter-callout { position: relative; background: var(--surface); border: 1px solid var(--line); border-top: 2px solid var(--accent); border-radius: var(--radius); padding: 56px 32px; margin: 80px 0; }
+/* SectionHeader inside newsletter-callout: tighten its top margin so the
+   callout's own padding handles the breathing room. */
+.newsletter-callout .section-header { margin-top: 0; }
 .newsletter-callout-note { color: var(--ink-muted); font-size: 14px; margin: 0; }
 
 /* 10.O Pagination (only the load-more bits in Phase 2; share/nextprev/related land in Phase 3) */
@@ -619,18 +597,18 @@ img { max-width: 100%; height: auto; display: block; }
 .show-section-numbers .reading-body { counter-reset: section; }
 .reading-body p { margin: 0 0 1.4em; }
 
-.show-drop-cap .reading-body > p:first-of-type::first-letter { font-family: var(--font-headline); font-size: 5em; float: left; line-height: 0.82; padding: 8px 12px 0 0; margin-top: 4px; color: var(--accent); font-weight: 600; }
+.show-drop-cap .reading-body > p:first-of-type::first-letter { font-family: var(--font-headline); font-size: 5em; float: left; line-height: 0.82; padding: 8px 12px 0 0; margin-top: 4px; color: var(--accent); font-weight: 800; }
 
-.reading-body h2 { font-family: var(--font-headline); font-weight: 600; font-size: 32px; line-height: 1.2; letter-spacing: -0.01em; color: var(--ink-paper); margin: 3em 0 0.8em; opacity: 1; transition: opacity 600ms ease; }
+.reading-body h2 { font-family: var(--font-headline); font-weight: 700; font-size: 32px; line-height: 1.2; letter-spacing: -0.015em; color: var(--ink-paper); margin: 3em 0 0.8em; opacity: 1; transition: opacity 600ms ease; }
 .show-section-numbers .reading-body h2 { counter-increment: section; }
 .show-section-numbers .reading-body h2::before { content: counter(section, decimal-leading-zero); display: block; font-family: var(--font-mono); font-size: 13px; font-weight: 400; color: var(--ink-faint); letter-spacing: 0.2em; margin-bottom: 16px; }
-.reading-body h3 { font-family: var(--font-headline); font-weight: 600; font-size: 24px; letter-spacing: -0.01em; margin: 2.2em 0 0.6em; }
+.reading-body h3 { font-family: var(--font-headline); font-weight: 700; font-size: 24px; letter-spacing: -0.01em; margin: 2.2em 0 0.6em; }
 .reading-body a { color: var(--ink-paper); border-bottom: 1px solid var(--ink-faint); transition: border-color 150ms; }
 .reading-body a:hover { background: transparent; border-bottom-color: var(--accent); }
 .reading-body blockquote { font-family: var(--font-serif); font-style: italic; font-size: 24px; line-height: 1.45; color: var(--ink); margin: 2em 0; padding: 0 0 0 28px; border-left: 2px solid var(--ink); }
 .reading-body hr { border: 0; border-top: 1px solid var(--ink-muted); width: 120px; margin: 4em auto; }
-.reading-body code { font-family: var(--font-mono); font-size: 0.85em; background: var(--surface-alt); padding: 2px 6px; border-radius: 4px; }
-.reading-body pre { font-family: var(--font-mono); font-size: 14px; background: var(--ink-paper); color: var(--cream); padding: 18px 20px; border-radius: var(--radius); overflow-x: auto; }
+.reading-body code { font-family: var(--font-code); font-size: 0.85em; background: var(--surface-alt); padding: 2px 6px; border-radius: 4px; }
+.reading-body pre { font-family: var(--font-code); font-size: 14px; background: var(--ink-paper); color: var(--cream); padding: 18px 20px; border-radius: var(--radius); overflow-x: auto; }
 .reading-body pre code { background: transparent; padding: 0; color: inherit; }
 .reading-body img { border-radius: var(--radius); margin: 1.6em 0; }
 .reading-body figcaption { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); text-align: center; margin-top: 12px; text-transform: uppercase; letter-spacing: 0.14em; }
@@ -960,8 +938,8 @@ img { max-width: 100%; height: auto; display: block; }
   margin: 0 0 10px;
 }
 .report-card-title {
-  font-family: var(--font-headline, var(--font-display, 'Lora'));
-  font-weight: 600;
+  font-family: var(--font-headline, var(--font-display, 'Inter'));
+  font-weight: 700;
   font-size: clamp(20px, 3.5vw, 28px);
   line-height: 1.15;
   margin: 0 0 12px;
@@ -1095,18 +1073,18 @@ img { max-width: 100%; height: auto; display: block; }
   max-width: 720px;
   transform: rotate(0deg);
 }
-/* Match site hero/focus-title typography: Lora 600, accent color on
+/* Match site hero/focus-title typography: Inter 800, accent color on
    light themes, tighter tracking, larger leading. */
 .report-card-cover-title {
-  font-family: var(--font-headline, 'Lora', Georgia, serif);
-  font-weight: 600;
+  font-family: var(--font-headline, 'Inter', system-ui, sans-serif);
+  font-weight: 800;
   font-size: clamp(48px, 7vw, 104px);
   line-height: 1.05;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
   margin: 0;
   color: inherit;
 }
-.u-theme-light .report-card-cover-title { color: var(--accent, #f43f5e); }
+.u-theme-light .report-card-cover-title { color: var(--accent, #f59e0b); }
 .report-card-cover-subtitle {
   font-family: var(--font-serif, 'Lora', Georgia, serif);
   font-size: clamp(17px, 2.2vw, 21px);
@@ -1133,25 +1111,25 @@ img { max-width: 100%; height: auto; display: block; }
   font-size: 12px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--accent, #f43f5e);
+  color: var(--accent, #f59e0b);
   background: #ffffff;
-  border: 1.5px solid var(--accent, #f43f5e);
-  box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent, #f43f5e) 40%, transparent);
+  border: 1.5px solid var(--accent, #f59e0b);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent, #f59e0b) 40%, transparent);
   animation: report-scroll-hint-glow 2.2s ease-in-out infinite;
   cursor: default;
 }
 .report-scroll-hint svg {
   flex: 0 0 auto;
-  color: var(--accent, #f43f5e);
+  color: var(--accent, #f59e0b);
   animation: report-scroll-hint-arrow 1.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 @keyframes report-scroll-hint-glow {
   0%, 100% {
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent, #f43f5e) 35%, transparent);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent, #f59e0b) 35%, transparent);
     transform: scale(1);
   }
   50% {
-    box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent, #f43f5e) 0%, transparent);
+    box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent, #f59e0b) 0%, transparent);
     transform: scale(1.03);
   }
 }
@@ -1271,8 +1249,8 @@ img { max-width: 100%; height: auto; display: block; }
   letter-spacing: 0.1em;
   text-transform: uppercase;
   border-radius: 999px;
-  background: var(--accent-bg, #fff1f4);
-  color: var(--accent-deep, #9f1239);
+  background: var(--accent-bg, #fff7e6);
+  color: var(--accent-deep, #b45309);
 }
 
 /* Reduced-motion — explicit overrides for the few report-specific animations */
@@ -1296,9 +1274,8 @@ img { max-width: 100%; height: auto; display: block; }
    ============================================================ */
 @supports ((background-clip: text) or (-webkit-background-clip: text)) {
   .hero-title,
-  .focus-title,
-  .intro-tagline,
   .archive-title,
+  .section-heading,
   .error-page .code,
   .show-drop-cap .reading-body > p:first-of-type::first-letter,
   .u-theme-light .report-card-cover-title {
@@ -1332,4 +1309,72 @@ img { max-width: 100%; height: auto; display: block; }
 .release-card:hover .release-card-cta {
   background: linear-gradient(315deg, var(--accent) 0%, var(--accent-deep) 100%);
   border-color: var(--accent-deep);
+}
+
+/* =============================================================
+   Section template — shared rhythm for editorial sections below
+   the slideshow. Eyebrow + heading + lede + optional visual snap
+   to a single left edge so the eye drops down one column.
+   ============================================================= */
+.section-header {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 24px 48px;
+  align-items: center;
+  margin: 64px 0 32px;
+}
+.section-header-text { min-width: 0; }
+.section-eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--ink-muted);
+  margin: 0 0 12px;
+}
+.section-heading {
+  font-family: var(--font-headline);
+  font-weight: 700;
+  font-size: clamp(28px, 4vw, 48px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--accent);
+  margin: 0 0 12px;
+  max-width: 24ch;
+}
+.section-lede {
+  font-family: var(--font-serif);
+  font-size: clamp(15px, 1.6vw, 18px);
+  line-height: 1.55;
+  color: var(--ink-muted);
+  max-width: 56ch;
+  margin: 0;
+}
+.section-visual {
+  align-self: start;
+}
+@media (max-width: 700px) {
+  .section-header {
+    grid-template-columns: 1fr;
+    margin: 48px 0 24px;
+  }
+  .section-visual { margin-top: 24px; }
+}
+
+/* Through-line hairline rail — runs through the section-header
+   column on editorial sections. Hidden on mobile to avoid crowding. */
+.section-header.has-rail .section-rail {
+  position: absolute;
+  left: -16px;
+  top: 0;
+  bottom: -64px;
+  width: 1px;
+  background: var(--line);
+  opacity: 0.6;
+  pointer-events: none;
+}
+@media (max-width: 700px) {
+  .section-header.has-rail .section-rail { display: none; }
 }
