@@ -2,6 +2,7 @@ node_modules
 
 # Output
 .output
+.claude
 .vercel
 .netlify
 .wrangler
@@ -10,9 +11,6 @@ node_modules
 
 # Generated content (re-derivable from content/*.md at build time)
 /src/lib/generated/
-
-# Drive-hosted images (fetched at build time, not committed)
-/static/images/
 
 # Pagefind index (regenerated on build)
 /build/pagefind/
