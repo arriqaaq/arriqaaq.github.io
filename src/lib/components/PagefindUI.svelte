@@ -72,6 +72,7 @@
 
 	$effect(() => {
 		if (open) void init();
+		else initialized = false;
 	});
 
 	function close() {
