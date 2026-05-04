@@ -1,13 +1,16 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import { settings } from '$lib/content';
+	import { settings, getReport } from '$lib/content';
 	import PostCard from '$lib/components/PostCard.svelte';
 	import PostCardLarge from '$lib/components/PostCardLarge.svelte';
 	import FeaturedHero from '$lib/components/FeaturedHero.svelte';
 	import KnowledgeStack from '$lib/components/KnowledgeStack.svelte';
 	import Newsletter from '$lib/components/Newsletter.svelte';
+	import ReportPage from '$lib/components/report/ReportPage.svelte';
 
 	let { data } = $props();
+
+	const introReport = getReport('arriqaaq-2026') ?? null;
 
 	const ordered = $derived([...data.featured, ...data.recent]);
 	const heroPost = $derived(ordered[0] ?? null);
@@ -22,14 +25,35 @@
 	<meta name="description" content={settings.description} />
 </svelte:head>
 
-<section class="hero hero--split">
-	<div class="hero-left">
+{#if introReport}
+	{@const firstChapter =
+		introReport.chapters.find((c) => c.show_in_stepper) ?? introReport.chapters[0]}
+	<section
+		class="report-inline"
+		class:u-theme-light={firstChapter?.theme === 'light'}
+		class:u-theme-dark={firstChapter?.theme === 'dark'}
+		style:--page-bg={firstChapter?.bg}
+	>
+		<ReportPage report={introReport} inline />
+	</section>
+{:else}
+	<section class="hero hero--centered">
 		<h1 class="hero-title">{settings.title}<span class="hero-title-accent">.</span></h1>
 		{#if settings.description}
 			<p class="hero-lede">{settings.description}</p>
 		{/if}
+	</section>
+{/if}
+
+<section class="focus-split">
+	<div class="focus-copy">
+		<h2 class="focus-title">What we focus on<span class="hero-title-accent">.</span></h2>
+		<p class="focus-lede">
+			The deen, from first principles. The six foundations we cover: Tajweed, Grammar, Aqeedah,
+			Usul al-Hadith, Usul al-Fiqh, and Usul at-Tafsir — the roots before the branches.
+		</p>
 	</div>
-	<div class="hero-right">
+	<div class="focus-visual">
 		<KnowledgeStack />
 	</div>
 </section>

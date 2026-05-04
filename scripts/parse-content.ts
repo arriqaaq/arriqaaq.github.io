@@ -119,29 +119,30 @@ function loadYaml<T = any>(file: string, fallback: T): T {
 	return (yaml.load(readFileSync(file, 'utf8')) as T) ?? fallback;
 }
 
-type RawCardMeta = {
-	kind?: string;
-	bg?: string;
-	theme?: 'light' | 'dark';
-	share?: boolean;
-	order?: number;
-	bullet?: { value: number | string; unit?: string };
-	rotation?: number;
-};
-
-const REPORT_CARD_KINDS = new Set([
-	'cover',
-	'stat',
-	'quote',
-	'chart',
-	'callout',
-	'stat-chart'
-]);
-
 function alternatingRotation(i: number): number {
 	const cycle = [-3, 0, 3];
 	return cycle[i % cycle.length];
 }
+
+function deriveExcerpt(plaintext: string, max = 200): string | null {
+	if (!plaintext) return null;
+	const trimmed = plaintext.trim();
+	if (trimmed.length <= max) return trimmed;
+	return trimmed.slice(0, max).replace(/\s+\S*$/, '').trim() + '…';
+}
+
+type Palette = { bg: string; theme: 'light' | 'dark' };
+// All chapter palette slots are dark-themed so the cover headline reads white
+// on a colored background (Manychat aesthetic). The intro chapter is light-themed
+// separately to render the brand pink "Arriqaaq" on the soft pink wash.
+const DEFAULT_PALETTE: Palette[] = [
+	{ bg: 'var(--swatch--gold)', theme: 'dark' },
+	{ bg: 'var(--swatch--cobalt)', theme: 'dark' },
+	{ bg: 'var(--swatch--amethyst)', theme: 'dark' },
+	{ bg: 'var(--swatch--dusk)', theme: 'dark' },
+	{ bg: 'var(--pink-deep)', theme: 'dark' },
+	{ bg: 'var(--swatch--black)', theme: 'dark' }
+];
 
 async function main() {
 	mkdirSync(OUT_DIR, { recursive: true });
@@ -175,8 +176,6 @@ async function main() {
 	const postFiles = await readMdDir(POSTS_DIR);
 	const pageFiles = await readMdDir(PAGES_DIR);
 
-	const postReportMeta = new Map<string, RawCardMeta>();
-
 	function buildPost(rec: { slug: string; fm: any; html: string; plaintext: string }): ParsedPost {
 		const fm = rec.fm;
 		const tagSlugs: string[] = (fm.tags ?? []).filter((s: string) => tagBySlug.has(s));
@@ -185,10 +184,6 @@ async function main() {
 
 		const tagIds = tagSlugs.map((s) => tagBySlug.get(s)!.id);
 		const authorIds = authorSlugs.map((s) => authorBySlug.get(s)!.id);
-
-		if (fm.report && typeof fm.report === 'object') {
-			postReportMeta.set(rec.slug, fm.report as RawCardMeta);
-		}
 
 		return {
 			id: deterministicId('post:' + rec.slug),
@@ -244,146 +239,169 @@ async function main() {
 		return out;
 	}
 
-	function buildReportCardFromPost(
-		post: ParsedPost,
-		chapter: any,
-		hash: string | null,
-		fallbackRotation: number
-	) {
-		const meta = postReportMeta.get(post.slug) ?? {};
-		const rawKind = meta.kind ?? 'callout';
-		const kind = REPORT_CARD_KINDS.has(rawKind) ? rawKind : 'callout';
-		const theme: 'light' | 'dark' =
-			meta.theme === 'light' || meta.theme === 'dark' ? meta.theme : chapter.theme;
+	type ChapterShape = {
+		id: string;
+		title: string;
+		nav_label: string;
+		nav_icon: string | null;
+		nav_index: number | null;
+		bg: string;
+		theme: 'light' | 'dark';
+		tag: string | null;
+		show_in_stepper: boolean;
+	};
+
+	function buildPostCard(post: ParsedPost, chapter: ChapterShape, rotation: number) {
 		return {
-			kind,
+			kind: 'post',
 			post,
 			title: post.title,
 			eyebrow: null,
-			body_html: post.html,
+			excerpt: post.custom_excerpt ?? deriveExcerpt(post.plaintext, 200),
+			permalink: `/${post.slug}/`,
 			feature_image: post.feature_image,
-			bg: meta.bg ?? chapter.bg,
-			theme,
-			share: meta.share !== false,
-			rotation:
-				typeof meta.rotation === 'number' ? meta.rotation : fallbackRotation,
-			bullet: meta.bullet
-				? {
-						value: meta.bullet.value,
-						unit: meta.bullet.unit ?? null
-					}
-				: null,
-			hash
+			bg: chapter.bg,
+			theme: chapter.theme,
+			share: true,
+			rotation,
+			hash: null
 		};
 	}
 
-	function buildSyntheticCover(chapter: any, hash: string) {
+	function buildSyntheticCover(chapter: ChapterShape, subtitle: string | null, hash: string) {
 		return {
 			kind: 'cover',
 			post: null,
-			title: chapter.title ?? chapter.nav_label ?? null,
+			title: chapter.title,
 			eyebrow:
 				typeof chapter.nav_index === 'number' ? `Chapter ${chapter.nav_index}` : null,
-			body_html: chapter.subtitle ?? null,
-			feature_image: chapter.cover_image ?? chapter.nav_icon ?? null,
+			excerpt: subtitle,
+			permalink: null,
+			feature_image: chapter.nav_icon,
 			bg: chapter.bg,
 			theme: chapter.theme,
 			share: false,
 			rotation: 0,
-			bullet: null,
 			hash
 		};
 	}
 
+	function paletteAt(palette: Palette[], i: number): Palette {
+		return palette[i % palette.length];
+	}
+
 	function buildReport(file: string, data: any) {
 		const slug: string = data.slug ?? basename(file).replace(/\.ya?ml$/i, '');
-		if (!Array.isArray(data.chapters)) {
-			console.warn(`SKIP report "${slug}": no chapters[] array.`);
+		const topN: number =
+			typeof data.top_n_tags === 'number' && data.top_n_tags > 0 ? data.top_n_tags : 6;
+		const maxPostsPerChapter: number =
+			typeof data.max_posts_per_chapter === 'number' && data.max_posts_per_chapter > 0
+				? data.max_posts_per_chapter
+				: 6;
+		const includeIntro = data.include_intro !== false;
+		const includeOutro = data.include_outro !== false;
+		const excludeTags: Set<string> = new Set(
+			Array.isArray(data.exclude_tags) ? data.exclude_tags : []
+		);
+		const palette: Palette[] =
+			Array.isArray(data.palette) && data.palette.length > 0
+				? data.palette.map((p: any) => ({
+						bg: typeof p?.bg === 'string' ? p.bg : 'var(--swatch--black)',
+						theme: p?.theme === 'light' ? 'light' : 'dark'
+					}))
+				: DEFAULT_PALETTE;
+		const overrides: Record<string, { title?: string; nav_label?: string }> =
+			data.chapter_overrides && typeof data.chapter_overrides === 'object'
+				? data.chapter_overrides
+				: {};
+
+		// Top N tags by post_count, excluding system + user-excluded.
+		const candidateTags = tags
+			.filter((t) => t.post_count > 0)
+			.filter((t) => !t.slug.startsWith('report-'))
+			.filter((t) => !excludeTags.has(t.slug))
+			.sort((a, b) => b.post_count - a.post_count)
+			.slice(0, topN);
+
+		const chapters: any[] = [];
+
+		if (includeIntro) {
+			const introBg = data.intro_bg ?? 'var(--swatch--black)';
+			const introTheme: 'light' | 'dark' = data.intro_theme === 'light' ? 'light' : 'dark';
+			const intro: ChapterShape = {
+				id: 'intro',
+				title: data.title ?? 'Intro',
+				nav_label: 'Intro',
+				nav_icon: null,
+				nav_index: null,
+				bg: introBg,
+				theme: introTheme,
+				tag: null,
+				show_in_stepper: true
+			};
+			chapters.push({
+				...intro,
+				cards: [buildSyntheticCover(intro, data.subtitle ?? null, 'intro')]
+			});
+		}
+
+		candidateTags.forEach((tag, i) => {
+			const palettePick = paletteAt(palette, i);
+			const ov = overrides[tag.slug] ?? {};
+			const chapter: ChapterShape = {
+				id: tag.slug,
+				title: ov.title ?? tag.name,
+				nav_label: ov.nav_label ?? tag.name,
+				nav_icon: tag.feature_image ?? null,
+				nav_index: i + 1,
+				bg: palettePick.bg,
+				theme: palettePick.theme,
+				tag: tag.slug,
+				show_in_stepper: true
+			};
+			const matched = posts
+				.filter((p) => p.tags.includes(tag.id))
+				.sort((a, b) => (a.published_at < b.published_at ? 1 : -1))
+				.slice(0, maxPostsPerChapter);
+			const cards: any[] = [
+				buildSyntheticCover(chapter, `${matched.length} post${matched.length === 1 ? '' : 's'}`, chapter.id)
+			];
+			matched.forEach((p, idx) => {
+				cards.push(buildPostCard(p, chapter, alternatingRotation(idx + 1)));
+			});
+			chapters.push({ ...chapter, cards });
+		});
+
+		if (includeOutro) {
+			const outroBg = data.outro_bg ?? 'var(--swatch--white)';
+			const outroTheme: 'light' | 'dark' = data.outro_theme === 'dark' ? 'dark' : 'light';
+			const outro: ChapterShape = {
+				id: 'your-turn',
+				title: 'Your Turn',
+				nav_label: 'Your Turn',
+				nav_icon: null,
+				nav_index: null,
+				bg: outroBg,
+				theme: outroTheme,
+				tag: null,
+				show_in_stepper: true
+			};
+			chapters.push({
+				...outro,
+				cards: [
+					buildSyntheticCover(
+						outro,
+						data.outro_subtitle ?? 'Browse more from the library',
+						'your-turn'
+					)
+				]
+			});
+		}
+
+		if (chapters.length === 0) {
+			console.warn(`SKIP report "${slug}": no chapters resolved.`);
 			return null;
 		}
-		const chapters = data.chapters
-			.map((ch: any) => {
-				if (!ch || typeof ch !== 'object' || !ch.id) {
-					console.warn(`  report "${slug}": skipping chapter without id.`);
-					return null;
-				}
-				const theme: 'light' | 'dark' = ch.theme === 'dark' ? 'dark' : 'light';
-				const bg: string =
-					typeof ch.bg === 'string' && ch.bg.trim()
-						? ch.bg
-						: 'var(--swatch--black)';
-				const chapter = {
-					id: String(ch.id),
-					title: ch.title ?? ch.nav_label ?? String(ch.id),
-					nav_label: ch.nav_label ?? ch.title ?? String(ch.id),
-					nav_icon: ch.nav_icon ?? null,
-					nav_index: typeof ch.nav_index === 'number' ? ch.nav_index : null,
-					bg,
-					theme,
-					tag: typeof ch.tag === 'string' ? ch.tag : null,
-					show_in_stepper: ch.show_in_stepper !== false,
-					subtitle: ch.subtitle ?? null,
-					cover_image: ch.cover_image ?? null
-				};
-
-				const matched: ParsedPost[] = [];
-				if (chapter.tag) {
-					const tagRec = tagBySlug.get(chapter.tag);
-					if (!tagRec) {
-						console.warn(
-							`  report "${slug}" / chapter "${chapter.id}": unknown tag "${chapter.tag}".`
-						);
-					} else {
-						const tagId = tagRec.id;
-						for (const p of posts) if (p.tags.includes(tagId)) matched.push(p);
-					}
-				}
-
-				const coverPostSlug: string | null =
-					typeof ch.cover_post === 'string' ? ch.cover_post : null;
-				let coverPost: ParsedPost | null = null;
-				if (coverPostSlug) {
-					coverPost = postBySlugMap.get(coverPostSlug) ?? null;
-					if (!coverPost) {
-						console.warn(
-							`  report "${slug}" / chapter "${chapter.id}": unknown cover_post "${coverPostSlug}".`
-						);
-					}
-				}
-
-				const ordered = matched
-					.filter((p) => p.slug !== coverPostSlug)
-					.sort((a, b) => {
-						const oa = postReportMeta.get(a.slug)?.order ?? Number.MAX_SAFE_INTEGER;
-						const ob = postReportMeta.get(b.slug)?.order ?? Number.MAX_SAFE_INTEGER;
-						if (oa !== ob) return oa - ob;
-						return a.published_at < b.published_at ? 1 : -1;
-					});
-
-				const cards: any[] = [];
-				if (coverPost) {
-					cards.push(
-						buildReportCardFromPost(coverPost, chapter, chapter.id, 0)
-					);
-				} else {
-					cards.push(buildSyntheticCover(chapter, chapter.id));
-				}
-				ordered.forEach((p, i) => {
-					cards.push(
-						buildReportCardFromPost(p, chapter, null, alternatingRotation(i + 1))
-					);
-				});
-
-				if (cards.length === 1 && !coverPost && matched.length === 0) {
-					console.warn(
-						`  report "${slug}" / chapter "${chapter.id}": no posts resolved (synthetic cover only).`
-					);
-				}
-
-				const { subtitle: _s, cover_image: _c, ...chapterOut } = chapter;
-				return { ...chapterOut, cards };
-			})
-			.filter(Boolean);
 
 		return {
 			slug,

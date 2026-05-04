@@ -497,12 +497,36 @@ img { max-width: 100%; height: auto; display: block; }
 .announcement-text { flex: 1; }
 .announcement-arrow { opacity: 0.6; }
 
-/* Split hero */
-.hero--split { display: grid; grid-template-columns: 1.25fr 1fr; gap: 48px; align-items: center; padding: 48px 0 64px; min-height: calc(100vh - var(--topbar-h) - 240px); }
-@media (max-width: 900px) { .hero--split { grid-template-columns: 1fr; gap: 32px; min-height: 0; padding: 32px 0 48px; } }
+/* Centered hero — title + tagline only, fills the viewport */
+.hero--centered { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: calc(100vh - var(--topbar-h) - 64px); padding: 32px 0; }
+.hero--centered .hero-title { max-width: none; font-size: clamp(48px, 7vw, 104px); margin: 0 0 24px; }
+.hero--centered .hero-lede { max-width: 56ch; margin: 0 auto; }
+@media (max-width: 900px) { .hero--centered { min-height: 60vh; padding: 32px 0; } }
+
+/* Split hero — image bleeds to viewport's right edge (legacy, unused) */
+.hero--split { display: grid; grid-template-columns: minmax(0, 460px) 1fr; gap: 56px; align-items: center; padding: 32px 0 48px; min-height: calc(100vh - var(--topbar-h) - 64px); }
+@media (max-width: 900px) { .hero--split { grid-template-columns: 1fr; gap: 28px; padding: 24px 0 32px; min-height: 0; } }
 .hero-left { min-width: 0; }
 .hero-title-accent { color: var(--pink-deep); }
-.hero-right { min-width: 0; }
+.hero-right { min-width: 0; margin-right: calc(-1 * max(32px, (100vw - var(--rail-w) - var(--panel-w) - var(--container-w)) / 2 + 32px)); }
+@media (max-width: 900px) { .hero-right { margin-right: 0; display: flex; justify-content: center; } }
+.hero-cover { width: 100%; max-width: none; height: clamp(240px, 32vh, 340px); object-fit: cover; object-position: center; border-radius: 18px 0 0 18px; box-shadow: -24px 24px 60px -32px rgba(230, 59, 122, 0.35); display: block; }
+@media (max-width: 900px) { .hero-cover { max-width: 320px; height: auto; aspect-ratio: 1 / 1; margin-inline: auto; border-radius: 18px; box-shadow: 0 24px 60px -32px rgba(230, 59, 122, 0.35); } }
+@media (max-width: 600px) { .hero-cover { max-width: min(100%, 280px); } }
+
+/* What we focus on — relocated KnowledgeStack with framing copy.
+   White bg so it doesn't double up on the pink intro section above it. */
+.focus-split { display: grid; grid-template-columns: 1.15fr 1fr; gap: 56px; align-items: center; padding: 72px 0 88px; background: #ffffff; }
+@media (max-width: 900px) {
+  .focus-split { grid-template-columns: 1fr; gap: 80px; padding: 56px 0 64px; }
+  /* Cube has an upward halo/glow; push the visual down so it doesn't bleed into the text. */
+  .focus-visual { margin-top: 24px; }
+}
+.focus-copy { min-width: 0; }
+.focus-title { font-family: var(--font-headline); font-weight: 500; font-size: clamp(32px, 5vw, 72px); line-height: 1.06; letter-spacing: -0.02em; color: var(--pink); margin: 0 0 16px; max-width: 16ch; }
+.focus-lede { font-family: var(--font-serif); font-size: clamp(15px, 1.8vw, 19px); line-height: 1.5; color: var(--ink-muted); max-width: 56ch; margin: 0; }
+.focus-visual { min-width: 0; display: flex; justify-content: center; }
+
 .hero-card { display: block; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; transition: border-color 180ms, box-shadow 180ms, transform 180ms; }
 .hero-card:hover { border-color: var(--ink); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
 .hero-card-image { aspect-ratio: 4/3; overflow: hidden; background: var(--surface-alt); }
@@ -788,6 +812,537 @@ img { max-width: 100%; height: auto; display: block; }
 .contact-form input, .contact-form textarea { width: 100%; padding: 10px 12px; font-family: var(--font-ui); font-size: 14px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); color: var(--ink); }
 .contact-form textarea { min-height: 160px; resize: vertical; }
 .contact-form input:focus, .contact-form textarea:focus { border-color: var(--ink); outline: none; box-shadow: 0 0 0 3px var(--pink-bg); }
+
+/* ============================================================
+   11. Report overlay + standalone — Manychat-style scroll-driven report
+   ============================================================ */
+
+/* Per-chapter swatches (chapter.bg in content/reports/*.yaml) */
+:root {
+  --swatch--black:    #0a0a0a;
+  --swatch--gold:     #d4a937;
+  --swatch--white:    #f6f4ee;
+  --swatch--dusk:     #2a2440;
+  --swatch--cobalt:   #1d3aa3;
+  --swatch--amethyst: #6b3aa3;
+}
+
+/* Shell — mirrors .search-overlay (PagefindUI). z-index 101 = one above .search-overlay (100). */
+.report-overlay {
+  position: fixed; inset: 0; z-index: 101;
+  display: flex;
+  animation: report-overlay-in 220ms ease-out;
+}
+.report-overlay-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(10, 10, 10, 0.6);
+  border: 0; padding: 0; margin: 0; cursor: pointer;
+}
+.report-overlay-panel {
+  position: relative; z-index: 1;
+  width: 100%; height: 100dvh;
+  display: flex; flex-direction: column; overflow: hidden;
+  background: var(--page-bg, var(--swatch--black));
+  color: #fff;
+  transition:
+    background-color 600ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.report-overlay-panel.u-theme-light { color: #0a0a0a; }
+.report-overlay-close {
+  position: absolute; top: 12px; right: 12px; z-index: 3;
+  width: 44px; height: 44px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: inherit; border: 0; cursor: pointer;
+  font-size: 22px; line-height: 1;
+  display: inline-flex; align-items: center; justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 160ms ease;
+}
+.report-overlay-panel.u-theme-light .report-overlay-close {
+  background: rgba(0, 0, 0, 0.08);
+}
+.report-overlay-close:hover { background: rgba(255, 255, 255, 0.22); }
+.report-overlay-panel.u-theme-light .report-overlay-close:hover { background: rgba(0, 0, 0, 0.14); }
+@media (min-width: 600px) {
+  .report-overlay-close { top: 16px; right: 16px; font-size: 24px; }
+}
+@keyframes report-overlay-in {
+  from { opacity: 0; transform: scale(0.985); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Standalone (when /report/<slug> is the real route) */
+.report-standalone {
+  min-height: 100dvh;
+  background: var(--page-bg, var(--swatch--black));
+  color: #fff;
+  transition:
+    background-color 600ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.report-standalone.u-theme-light { color: #0a0a0a; }
+
+/* Inline embed (report rendered as a homepage hero section).
+   Breaks out of `.container` to paint full viewport width; same color/theme
+   transitions as the standalone wrapper, but only fills its own section
+   so users can scroll past to the next page section. */
+.report-inline {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  /* Pull up to negate .main's top padding (32px desktop / 24px mobile) so the
+     section sits flush against the sticky topbar with no white seam. */
+  margin-top: -32px;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--page-bg, var(--swatch--black));
+  color: #fff;
+  transition:
+    background-color 600ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
+}
+.report-inline.u-theme-light { color: #0a0a0a; }
+.report-inline .report { min-height: 100dvh; }
+@media (max-width: 600px) {
+  .report-inline { margin-top: -24px; }
+}
+
+/* Report root — mobile-first vertical stack until Swiper hydrates */
+.report {
+  display: flex; flex-direction: column;
+  min-height: 100dvh;
+  position: relative;
+}
+.report-header {
+  padding: 56px 20px 24px;
+  text-align: center;
+}
+.report-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin: 0 0 8px;
+}
+.report-title {
+  font-family: var(--font-headline, var(--font-display, 'Tiempos Headline'));
+  font-weight: 600;
+  font-size: clamp(36px, 9vw, 72px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+.report-subtitle {
+  margin: 12px auto 0;
+  max-width: 32ch;
+  font-family: var(--font-serif);
+  font-size: clamp(15px, 2.4vw, 18px);
+  line-height: 1.45;
+  opacity: 0.78;
+}
+@media (min-width: 900px) {
+  .report-header { padding: 88px 32px 40px; }
+}
+
+/* Pre-Swiper vertical chapter list — replaced by .swiper-slide nodes once hydrated */
+.report-chapters {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-direction: column;
+}
+.report-chapter {
+  background: var(--chapter-bg, transparent);
+  padding: 64px 20px;
+  display: flex; align-items: center; justify-content: center;
+}
+.report-chapter[data-theme='light'] { color: #0a0a0a; }
+.report-chapter-inner { max-width: 720px; width: 100%; text-align: center; }
+.report-chapter-index {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  margin: 0 0 12px;
+}
+.report-chapter-title {
+  font-family: var(--font-headline, var(--font-display, 'Tiempos Headline'));
+  font-weight: 600;
+  font-size: clamp(28px, 6vw, 56px);
+  line-height: 1.05;
+  margin: 0 0 24px;
+  letter-spacing: -0.015em;
+}
+.report-chapter-cards { list-style: none; margin: 0; padding: 0; display: grid; gap: 20px; }
+@media (min-width: 900px) {
+  .report-chapter { padding: 96px 32px; }
+  .report-chapter-cards { gap: 28px; }
+}
+
+/* Card — mobile rotation off (cramped at <600px); rotation kicks in on tablet+ */
+.report-card {
+  background: var(--card-bg, rgba(255, 255, 255, 0.06));
+  border-radius: 18px;
+  padding: 24px 20px;
+  text-align: left;
+  transform: rotate(0deg);
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (min-width: 600px) {
+  .report-card { padding: 28px; transform: rotate(var(--card-rotation, 0deg)); }
+}
+.report-card-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin: 0 0 10px;
+}
+.report-card-title {
+  font-family: var(--font-headline, var(--font-display, 'Tiempos Headline'));
+  font-weight: 600;
+  font-size: clamp(20px, 3.5vw, 28px);
+  line-height: 1.15;
+  margin: 0 0 12px;
+}
+.report-card-body {
+  font-family: var(--font-serif);
+  font-size: clamp(15px, 2.2vw, 17px);
+  line-height: 1.55;
+  opacity: 0.82;
+}
+.report-card-body p { margin: 0 0 12px; }
+.report-card-body p:last-child { margin-bottom: 0; }
+
+.report-back {
+  position: absolute; top: 12px; left: 12px; z-index: 3;
+  background: rgba(255, 255, 255, 0.14);
+  color: inherit; border: 0;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.u-theme-light .report-back { background: rgba(0, 0, 0, 0.08); }
+@media (min-width: 600px) {
+  .report-back { top: 16px; left: 16px; padding: 10px 16px; }
+}
+
+/* Stepper — mobile: scroll-snap chip strip, icons only; desktop: centered row with labels */
+.report-stepper {
+  position: sticky; top: 0; z-index: 2;
+  display: flex; gap: 6px;
+  padding: 8px 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.report-stepper::-webkit-scrollbar { display: none; }
+.report-stepper a {
+  position: relative;
+  flex: 0 0 auto;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  scroll-snap-align: center;
+  text-decoration: none;
+  color: inherit;
+  opacity: 0.6;
+  transition: opacity 200ms ease;
+  text-align: center;
+}
+.report-stepper a.is-active { opacity: 1; }
+.report-stepper a img {
+  width: 28px; height: 28px;
+  border-radius: 999px;
+  object-fit: cover;
+  background: rgba(255, 255, 255, 0.08);
+}
+.u-theme-light .report-stepper a img { background: rgba(0, 0, 0, 0.06); }
+.report-stepper .label {
+  display: none;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: pre;
+  line-height: 1.2;
+}
+.report-stepper .bullet {
+  position: absolute;
+  top: 4px; bottom: 4px; left: 0;
+  width: var(--bullet-w, 56px);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  transform: translateX(var(--bullet-x, 0));
+  transition:
+    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
+    width 380ms cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+.u-theme-light .report-stepper .bullet { background: rgba(0, 0, 0, 0.08); }
+@media (min-width: 900px) {
+  .report-stepper {
+    overflow-x: visible;
+    scroll-snap-type: none;
+    justify-content: center;
+    gap: 4px;
+    padding: 14px 20px;
+  }
+  .report-stepper a img { width: 36px; height: 36px; }
+  .report-stepper .label { display: block; }
+}
+
+/* Swiper integration (active once ReportPage hydrates) */
+.report-swiper { width: 100%; flex: 1 1 auto; min-height: 0; }
+.report-swiper .swiper-wrapper { align-items: center; }
+.report-swiper .swiper-slide {
+  width: min(86vw, 720px);
+  height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px 16px;
+}
+@media (min-width: 600px) {
+  .report-swiper .swiper-slide { width: min(72vw, 680px); padding: 32px; }
+}
+@media (min-width: 900px) {
+  .report-swiper .swiper-slide { width: min(56vw, 640px); }
+}
+
+/* Pre-init fallback (before Swiper.js attaches): stack vertically so the page is usable
+   even before JS hydrates. Swiper adds its own classes on init; we toggle `.is-ready`
+   in ReportPage.onMount which switches us back to the carousel layout. */
+.report-swiper:not(.is-ready) .swiper-wrapper {
+  display: block;
+  height: auto;
+  transform: none !important;
+}
+.report-swiper:not(.is-ready) .swiper-slide {
+  width: 100%;
+  height: auto;
+  padding: 48px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.u-theme-light .report-swiper:not(.is-ready) .swiper-slide {
+  border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+/* Cover card (chapter intro slide) — centered text-only, inherits chapter theme */
+.report-card--cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+  padding: 32px 20px;
+  background: transparent;
+  color: inherit;
+  text-decoration: none;
+  width: 100%;
+  max-width: 720px;
+  transform: rotate(0deg);
+}
+/* Match site hero/focus-title typography: Tiempos Headline 500, pink accent on
+   light themes, tighter tracking, larger leading. */
+.report-card-cover-title {
+  font-family: var(--font-headline, 'Tiempos Headline', Georgia, serif);
+  font-weight: 500;
+  font-size: clamp(48px, 7vw, 104px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: inherit;
+}
+.u-theme-light .report-card-cover-title { color: var(--pink, #e63b7a); }
+.report-card-cover-subtitle {
+  font-family: var(--font-serif, 'Tiempos Text', Georgia, serif);
+  font-size: clamp(17px, 2.2vw, 21px);
+  line-height: 1.5;
+  margin: 0;
+  max-width: 56ch;
+  color: inherit;
+  opacity: 0.85;
+}
+.u-theme-light .report-card-cover-subtitle {
+  color: var(--ink-muted, #6b6b6b);
+  opacity: 1;
+}
+/* Scroll affordance on the intro slide — pink chip with a glowing pulse +
+   arrow that slides to nudge the user toward swiping right. */
+.report-scroll-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 32px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  font-family: var(--font-mono, 'Courier Prime', monospace);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pink, #e63b7a);
+  background: #ffffff;
+  border: 1.5px solid var(--pink, #e63b7a);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--pink, #e63b7a) 40%, transparent);
+  animation: report-scroll-hint-glow 2.2s ease-in-out infinite;
+  cursor: default;
+}
+.report-scroll-hint svg {
+  flex: 0 0 auto;
+  color: var(--pink, #e63b7a);
+  animation: report-scroll-hint-arrow 1.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+@keyframes report-scroll-hint-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--pink, #e63b7a) 35%, transparent);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 8px color-mix(in srgb, var(--pink, #e63b7a) 0%, transparent);
+    transform: scale(1.03);
+  }
+}
+@keyframes report-scroll-hint-arrow {
+  0%, 100% { transform: translateX(0); opacity: 1; }
+  40% { transform: translateX(6px); opacity: 1; }
+  60% { transform: translateX(6px); opacity: 0.4; }
+  61% { transform: translateX(-2px); opacity: 0; }
+  80% { transform: translateX(0); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .report-scroll-hint,
+  .report-scroll-hint svg { animation: none; }
+  .report-scroll-hint { box-shadow: none; }
+}
+
+/* Post card — image hero on top, text below. Always white "paper" surface
+   regardless of chapter theme — readability over consistency, matches Manychat. */
+.report-card--post {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 360px;
+  background: #ffffff;
+  color: var(--ink, #1a1a1a);
+  border-radius: 18px;
+  padding: 16px;
+  text-decoration: none;
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.18);
+  transform: rotate(var(--card-rotation, 0deg));
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
+}
+.report-card--post:hover {
+  transform: rotate(0deg) translateY(-4px);
+  box-shadow: 8px 10px 0 rgba(0, 0, 0, 0.22);
+}
+@media (max-width: 599px) {
+  .report-card--post {
+    transform: rotate(0deg);
+    max-width: 100%;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.16);
+  }
+  .report-card--post:hover { transform: translateY(-2px); }
+}
+.report-card-figure {
+  margin: 0;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface-alt, #f5f5f4);
+}
+.report-card-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.report-card-figure--empty {
+  background: linear-gradient(135deg, var(--surface-alt, #f5f5f4), #ffffff);
+}
+.report-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 6px 6px;
+}
+.report-card--post .report-card-eyebrow {
+  font-family: var(--font-mono, 'Courier Prime', monospace);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-muted, #6b6b6b);
+  margin: 0;
+}
+.report-card--post .report-card-title {
+  font-family: var(--font-headline, 'Tiempos Headline', Georgia, serif);
+  font-weight: 600;
+  font-size: clamp(20px, 3.4vw, 28px);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--ink, #1a1a1a);
+  /* Clamp to two lines so cards don't grow uneven. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.report-card-excerpt {
+  font-family: var(--font-serif, 'Tiempos Text', Georgia, serif);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink-muted, #6b6b6b);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.report-card--post .report-card-tags {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.report-card--post .report-card-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  font-family: var(--font-mono, 'Courier Prime', monospace);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  background: var(--pink-bg, #fbe5ed);
+  color: var(--pink-deep, #b8285e);
+}
+
+/* Reduced-motion — explicit overrides for the few report-specific animations */
+@media (prefers-reduced-motion: reduce) {
+  .report-overlay { animation: none; }
+  .report-overlay-panel,
+  .report-standalone,
+  .report-card,
+  .report-stepper .bullet { transition: none; }
+}
 
 /* 10.Q Reduced motion */
 @media (prefers-reduced-motion: reduce) {

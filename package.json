@@ -39,5 +39,8 @@
 		"typescript": "^6.0.2",
 		"unified": "^11.0.5",
 		"vite": "^8.0.7"
+	},
+	"dependencies": {
+		"swiper": "^12.1.4"
 	}
 }

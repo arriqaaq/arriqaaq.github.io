@@ -52,26 +52,20 @@ export type SiteSettings = {
 };
 
 export type ReportTheme = 'light' | 'dark';
-export type ReportCardKind =
-	| 'cover'
-	| 'stat'
-	| 'quote'
-	| 'chart'
-	| 'callout'
-	| 'stat-chart';
+export type ReportCardKind = 'cover' | 'post';
 
 export type ReportCard = {
 	kind: ReportCardKind;
 	post: Post | null;
 	title: string | null;
 	eyebrow: string | null;
-	body_html: string | null;
+	excerpt: string | null;
+	permalink: string | null;
 	feature_image: string | null;
 	bg: string;
 	theme: ReportTheme;
 	share: boolean;
 	rotation: number;
-	bullet: { value: number | string; unit: string | null } | null;
 	hash: string | null;
 };
 

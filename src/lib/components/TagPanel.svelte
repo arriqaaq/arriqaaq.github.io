@@ -4,6 +4,8 @@
 	import { settings, tags, authors, pages } from '$lib/content';
 
 	const visibleAuthors = authors.filter((a) => a.slug !== 'ghost');
+	// Filter out report-system tags (e.g. report-af-2026-ch1) from the global topic list.
+	const visibleTags = tags.filter((t) => !t.slug.startsWith('report-'));
 
 	function isActive(url: string): boolean {
 		const path = page.url.pathname;
@@ -19,7 +21,7 @@
 
 	<small class="tag-panel-heading">Tags</small>
 	<ul class="tag-list">
-		{#each tags as t}
+		{#each visibleTags as t}
 			<li>
 				<a
 					href={`${base}/tag/${t.slug}/`}

@@ -1,0 +1,29 @@
+slug: arriqaaq-2026
+title: Arriqaaq
+subtitle: An online creative space for authentic islamic courses, articles, crafts, education and technology
+published: 2026-05-04
+
+# Auto-derived chapters: top N tags by post_count become numbered chapters,
+# the most recent N posts in each tag become cards. Optional intro/outro chapters.
+
+top_n_tags: 6
+max_posts_per_chapter: 6
+include_intro: true
+include_outro: true
+
+# Intro chapter (the homepage hero) uses the same soft-pink wash as the
+# "What we focus on" section so brand color stays consistent across the page.
+intro_bg: 'var(--pink-bg)'
+intro_theme: light
+
+# Optional knobs:
+# exclude_tags: [lifestyle]
+# chapter_overrides:
+#   fiqh: { title: "The Fiqh Foundation", nav_label: "Fiqh" }
+# palette:
+#   - { bg: 'var(--swatch--gold)',     theme: light }
+#   - { bg: 'var(--swatch--cobalt)',   theme: dark }
+#   - { bg: 'var(--swatch--amethyst)', theme: dark }
+#   - { bg: 'var(--swatch--dusk)',     theme: dark }
+#   - { bg: 'var(--swatch--white)',    theme: light }
+#   - { bg: 'var(--swatch--black)',    theme: dark }
