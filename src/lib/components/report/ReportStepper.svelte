@@ -31,28 +31,36 @@
 		if (!btn) return;
 		bulletX = btn.offsetLeft;
 		bulletW = btn.offsetWidth;
-		// Mobile: keep active chip centered in the scroll-snap strip.
-		if (window.matchMedia('(max-width: 899px)').matches) {
-			btn.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'nearest' });
-		}
+	}
+
+	// Mobile: keep active chip centered in the strip's own horizontal scroll.
+	// Avoid Element.scrollIntoView — it walks every scrollable ancestor including
+	// the viewport, which yanks the page back to the (sticky, in-hero) stepper.
+	function centerActive() {
+		if (!stepperEl) return;
+		if (!window.matchMedia('(max-width: 899px)').matches) return;
+		const btn = stepperEl.querySelector<HTMLElement>(
+			`[data-group="${activeChapterId}"]`
+		);
+		if (!btn) return;
+		const target = btn.offsetLeft - (stepperEl.clientWidth - btn.offsetWidth) / 2;
+		const max = stepperEl.scrollWidth - stepperEl.clientWidth;
+		const left = Math.max(0, Math.min(max, target));
+		const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		stepperEl.scrollTo({ left, behavior: reduced ? 'auto' : 'smooth' });
 	}
 
 	$effect(() => {
-		// Re-measure when active chapter changes.
 		void activeChapterId;
 		measureBullet();
+		centerActive();
 	});
 
 	onMount(() => {
 		measureBullet();
 		const ro = new ResizeObserver(() => measureBullet());
 		if (stepperEl) ro.observe(stepperEl);
-		const onResize = () => measureBullet();
-		window.addEventListener('resize', onResize);
-		return () => {
-			ro.disconnect();
-			window.removeEventListener('resize', onResize);
-		};
+		return () => ro.disconnect();
 	});
 
 	function onClick(e: MouseEvent, chapterId: string) {

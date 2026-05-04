@@ -9,8 +9,8 @@
 	import ReportStepper from './ReportStepper.svelte';
 	import ReportSlide from './ReportSlide.svelte';
 
-	type Props = { report: Report; close?: () => void; inline?: boolean };
-	let { report, close, inline = false }: Props = $props();
+	type Props = { report: Report };
+	let { report }: Props = $props();
 
 	type FlatSlide = {
 		card: ReportCard;
@@ -49,9 +49,7 @@
 	function applyChapterVisuals(id: string) {
 		const ch = report.chapters.find((c) => c.id === id);
 		if (!ch || !pageEl) return;
-		const root = pageEl.closest<HTMLElement>(
-			'.report-inline, .report-overlay-panel, .report-standalone'
-		);
+		const root = pageEl.closest<HTMLElement>('.report-inline');
 		if (root) {
 			root.style.setProperty('--page-bg', ch.bg);
 			root.classList.toggle('u-theme-light', ch.theme === 'light');
@@ -105,11 +103,8 @@
 			swiper.slideTo(groupsById.get(id)!.start, 600);
 			return;
 		}
-		// Pre-Swiper fallback: scroll the chapter section into view (vertical mode).
-		const el = swiperEl?.querySelector<HTMLElement>(
-			`[data-section="${id}"]`
-		);
-		el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		// Pre-Swiper fallback (carousel hasn't hydrated yet) — just record the
+		// active chapter visually; never scroll the page in hero context.
 		activeChapterId = id;
 		applyChapterVisuals(id);
 	}
@@ -130,10 +125,10 @@
 				el: HTMLElement,
 				opts: unknown
 			) => unknown;
-			const { EffectCoverflow, FreeMode, Mousewheel, Keyboard, A11y } = ModulesMod;
+			const { EffectCoverflow, FreeMode, Keyboard, A11y } = ModulesMod;
 
 			swiper = new Swiper(swiperEl as HTMLElement, {
-				modules: [EffectCoverflow, FreeMode, Mousewheel, Keyboard, A11y],
+				modules: [EffectCoverflow, FreeMode, Keyboard, A11y],
 				slidesPerView: 'auto',
 				centeredSlides: true,
 				autoHeight: false,
@@ -147,10 +142,9 @@
 				longSwipesRatio: 0.25,
 				longSwipesMs: 300,
 				preventClicksPropagation: true,
-				// Inline (homepage hero) confines listeners to the wrapper so vertical
-				// drags on the surrounding area scroll the page; standalone keeps the
-				// looser container target so empty bg around the card still swipes.
-				touchEventsTarget: inline ? 'wrapper' : 'container',
+				// Confine touch listeners to the wrapper so vertical drags on the
+				// surrounding area scroll the page instead of being captured.
+				touchEventsTarget: 'wrapper',
 				touchStartPreventDefault: false,
 				touchAngle: 25,
 				touchReleaseOnEdges: true,
@@ -161,8 +155,7 @@
 					slideShadows: false,
 					stretch: '-20%'
 				},
-				mousewheel: { enabled: !inline },
-				keyboard: { enabled: true, onlyInViewport: inline },
+				keyboard: { enabled: true, onlyInViewport: true },
 				breakpoints: {
 					0: {
 						speed: 300,
@@ -199,12 +192,6 @@
 					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 					init(s: any) {
 						buildGroups(s);
-						if (!inline) {
-							const initialHash = (location.hash || '').replace('#', '').trim();
-							if (initialHash && groupsById.has(initialHash)) {
-								s.slideTo(groupsById.get(initialHash)!.start, 0, false);
-							}
-						}
 						const id = activeGroupId(s);
 						if (id) {
 							activeChapterId = id;
@@ -224,10 +211,6 @@
 						if (id && id !== activeChapterId) {
 							activeChapterId = id;
 							applyChapterVisuals(id);
-							if (!inline) {
-								const base = location.href.split('#')[0];
-								history.replaceState(null, '', `${base}#${id}`);
-							}
 						}
 						recomputeProgress(s);
 					},
@@ -252,10 +235,7 @@
 
 		return () => {
 			cleanup();
-			// strip theme classes when unmounting
-			const root = pageEl?.closest<HTMLElement>(
-				'.report-inline, .report-overlay-panel, .report-standalone'
-			);
+			const root = pageEl?.closest<HTMLElement>('.report-inline');
 			if (root) {
 				root.style.removeProperty('--page-bg');
 				root.classList.remove('u-theme-light', 'u-theme-dark');
@@ -297,7 +277,4 @@
 		</div>
 	</div>
 
-	{#if close}
-		<button class="report-back" type="button" onclick={close}>← Close</button>
-	{/if}
 </section>

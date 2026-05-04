@@ -35,7 +35,7 @@
 		class:u-theme-dark={firstChapter?.theme === 'dark'}
 		style:--page-bg={firstChapter?.bg}
 	>
-		<ReportPage report={introReport} inline />
+		<ReportPage report={introReport} />
 	</section>
 {:else}
 	<section class="hero hero--centered">

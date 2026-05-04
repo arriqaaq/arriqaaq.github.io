@@ -67,21 +67,6 @@ export function getReport(slug: string): Report | undefined {
 	return reportBySlug.get(slug);
 }
 
-export function reportsByTag(tagId: string): { report: Report; chapterIds: string[] }[] {
-	const out: { report: Report; chapterIds: string[] }[] = [];
-	for (const r of reports) {
-		const matchingChapters = r.chapters.filter(
-			(c) =>
-				(c.tag && tagBySlug.get(c.tag)?.id === tagId) ||
-				c.cards.some((card) => card.post?.tags.includes(tagId))
-		);
-		if (matchingChapters.length > 0) {
-			out.push({ report: r, chapterIds: matchingChapters.map((c) => c.id) });
-		}
-	}
-	return out;
-}
-
 export function adjacentPosts(post: Post): { prev: Post | null; next: Post | null } {
 	const idx = posts.findIndex((p) => p.id === post.id);
 	if (idx === -1) return { prev: null, next: null };

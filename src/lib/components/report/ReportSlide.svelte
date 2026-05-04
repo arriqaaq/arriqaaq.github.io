@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { ReportCard, ReportChapter } from '$lib/types';
 	import { getTagById } from '$lib/content';
-	import { goto } from '$app/navigation';
 
 	type Props = { card: ReportCard; chapter: ReportChapter };
 	let { card, chapter }: Props = $props();
@@ -23,22 +22,6 @@
 	const primaryTagName = $derived(
 		card.post?.primary_tag ? (getTagById(card.post.primary_tag)?.name ?? null) : null
 	);
-
-	function onCardClick(e: MouseEvent) {
-		if (!card.permalink) return;
-		// Let modifier-clicks open in new tab natively.
-		if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-		if (e.button !== 0) return;
-		// If we're inside a shallow-routing overlay, close it before navigating
-		// so the user lands on the article itself, not behind a dialog.
-		if (typeof history !== 'undefined' && history.state?.reportSlug) {
-			e.preventDefault();
-			const href = card.permalink;
-			history.back();
-			// Wait one tick for the overlay to unmount before navigating.
-			setTimeout(() => goto(href), 0);
-		}
-	}
 </script>
 
 {#if isCover}
@@ -72,7 +55,6 @@
 		data-kind="post"
 		data-sveltekit-preload-data="hover"
 		style:--card-rotation="{card.rotation}deg"
-		onclick={onCardClick}
 	>
 		{#if card.feature_image}
 			<figure class="report-card-figure">

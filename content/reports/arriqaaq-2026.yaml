@@ -9,7 +9,7 @@ published: 2026-05-04
 top_n_tags: 6
 max_posts_per_chapter: 6
 include_intro: true
-include_outro: true
+include_outro: false
 
 # Intro chapter (the homepage hero) uses the soft accent wash (rose by default)
 # so brand color stays consistent across the page.
