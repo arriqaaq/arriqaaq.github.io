@@ -12,7 +12,7 @@
 	const year = new Date().getFullYear();
 </script>
 
-<footer class="footer">
+<footer class="footer theme--tajweed">
 	<div class="footer-row">
 		<span class="footer-meta">© {year} {settings.title}</span>
 		<div class="footer-social">

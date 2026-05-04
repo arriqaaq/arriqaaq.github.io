@@ -7,6 +7,7 @@
 	import KnowledgeStack from '$lib/components/KnowledgeStack.svelte';
 	import Newsletter from '$lib/components/Newsletter.svelte';
 	import ReportPage from '$lib/components/report/ReportPage.svelte';
+	import { themeClass } from '$lib/themeForTag';
 
 	let { data } = $props();
 
@@ -62,7 +63,7 @@
 	<small class="topic-strip-heading">Read by topic</small>
 	<div class="topic-grid">
 		{#each data.tags as t}
-			<a href={`${base}/tag/${t.slug}/`} class="topic-card">
+			<a href={`${base}/tag/${t.slug}/`} class="topic-card {themeClass(t.slug)}">
 				<span class="topic-name">{t.name}</span>
 				<span class="topic-count">{t.post_count}</span>
 			</a>
@@ -77,7 +78,7 @@
 {/if}
 
 {#if cardPosts.length}
-	<section class="releases">
+	<section class="releases theme--tajweed">
 		<small class="releases-heading">Latest releases</small>
 		<div class="releases-grid">
 			{#each cardPosts as p}
@@ -88,7 +89,7 @@
 {/if}
 
 {#if listPosts.length}
-	<section class="intro-list">
+	<section class="intro-list theme--tajweed">
 		<aside class="intro-tagline">
 			<p>{tagline}</p>
 		</aside>
@@ -106,7 +107,7 @@
 	</div>
 {/if}
 
-<section class="newsletter-callout">
+<section class="newsletter-callout theme--tajweed">
 	<h2>Get new posts in your inbox</h2>
 	<p>{settings.description}</p>
 	<Newsletter />

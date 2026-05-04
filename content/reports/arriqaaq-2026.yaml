@@ -11,9 +11,9 @@ max_posts_per_chapter: 6
 include_intro: true
 include_outro: true
 
-# Intro chapter (the homepage hero) uses the same soft-pink wash as the
-# "What we focus on" section so brand color stays consistent across the page.
-intro_bg: 'var(--pink-bg)'
+# Intro chapter (the homepage hero) uses the soft accent wash (rose by default)
+# so brand color stays consistent across the page.
+intro_bg: 'var(--accent-bg)'
 intro_theme: light
 
 # Optional knobs:

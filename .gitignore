@@ -18,6 +18,9 @@ node_modules
 # Archived Ghost export (kept for re-running migration; not needed at build)
 /data/archive/
 
+# Commercial font (removed); never re-commit
+static/fonts/tiempos/
+
 # OS
 .DS_Store
 Thumbs.db

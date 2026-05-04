@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { settings } from '$lib/content';
+	import { settings, getTagById } from '$lib/content';
 	import PostHeader from '$lib/components/PostHeader.svelte';
 	import PostShare from '$lib/components/PostShare.svelte';
 	import PostNextPrev from '$lib/components/PostNextPrev.svelte';
@@ -7,9 +7,13 @@
 	import ReadingProgress from '$lib/components/ReadingProgress.svelte';
 	import Newsletter from '$lib/components/Newsletter.svelte';
 	import Giscus from '$lib/components/Giscus.svelte';
+	import { themeClass } from '$lib/themeForTag';
 
 	let { data } = $props();
 	const isPost = $derived(data.post.type === 'post');
+	const primaryTagSlug = $derived(
+		data.post.primary_tag ? (getTagById(data.post.primary_tag)?.slug ?? null) : null
+	);
 </script>
 
 <svelte:head>
@@ -23,7 +27,7 @@
 	<ReadingProgress />
 {/if}
 
-<article class="reading" data-pagefind-body>
+<article class="reading {themeClass(primaryTagSlug)}" data-pagefind-body>
 	<PostHeader post={data.post} />
 	<div class="reading-body">
 		{@html data.html}

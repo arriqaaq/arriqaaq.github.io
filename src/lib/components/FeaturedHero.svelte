@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import { resolveImage } from '$lib/content';
+	import { themeClass } from '$lib/themeForTag';
 	import type { Post } from '$lib/types';
 
 	type Props = { post: Post };
@@ -8,11 +9,19 @@
 
 	const featureImg = $derived(resolveImage(post.feature_image, base));
 	const excerpt = $derived(post.custom_excerpt ?? post.plaintext.slice(0, 160) + '…');
+	const eyebrow = $derived(post.primary_tag ?? null);
 </script>
 
 <section class="featured-hero">
-	<a class="featured-hero-card" href={`${base}/${post.slug}/`}>
+	<a class="featured-hero-card {themeClass(post.primary_tag)}" href={`${base}/${post.slug}/`}>
 		<div class="featured-hero-text">
+			{#if eyebrow}
+				<span class="featured-hero-eyebrow">
+					<span>{eyebrow}</span>
+					<span class="featured-hero-eyebrow-sep" aria-hidden="true"></span>
+					<span>{post.reading_time} min read</span>
+				</span>
+			{/if}
 			<h1 class="featured-hero-title">{post.title}</h1>
 			<p class="featured-hero-excerpt">{excerpt}</p>
 			<span class="featured-hero-cta">Continue reading <span aria-hidden="true">→</span></span>

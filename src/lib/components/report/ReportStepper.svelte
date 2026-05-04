@@ -109,7 +109,7 @@
 		align-items: center;
 		justify-content: center;
 		background: rgba(255, 255, 255, 0.10);
-		font-family: var(--font-headline, 'Tiempos Headline', Georgia, serif);
+		font-family: var(--font-headline, 'Lora', Georgia, serif);
 		font-weight: 600;
 		font-size: 18px;
 		letter-spacing: -0.01em;

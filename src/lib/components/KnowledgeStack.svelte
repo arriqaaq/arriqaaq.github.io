@@ -384,7 +384,7 @@
 	.chip-bullet { font-size: 9px; opacity: 0.55; }
 
 	.chip.is-active {
-		color: var(--fg-on-pink, #fff);
+		color: var(--fg-on-accent, #fff);
 		background: var(--ink);
 		border-color: var(--shadow);
 		box-shadow: var(--shadow-sm), 0 0 0 2px color-mix(in srgb, var(--shadow) 35%, transparent);

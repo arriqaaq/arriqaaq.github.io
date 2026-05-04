@@ -133,14 +133,14 @@ function deriveExcerpt(plaintext: string, max = 200): string | null {
 
 type Palette = { bg: string; theme: 'light' | 'dark' };
 // All chapter palette slots are dark-themed so the cover headline reads white
-// on a colored background (Manychat aesthetic). The intro chapter is light-themed
-// separately to render the brand pink "Arriqaaq" on the soft pink wash.
+// on a colored background. The intro chapter is light-themed
+// separately to render the brand rose "Arriqaaq" on the soft accent wash.
 const DEFAULT_PALETTE: Palette[] = [
 	{ bg: 'var(--swatch--gold)', theme: 'dark' },
 	{ bg: 'var(--swatch--cobalt)', theme: 'dark' },
 	{ bg: 'var(--swatch--amethyst)', theme: 'dark' },
 	{ bg: 'var(--swatch--dusk)', theme: 'dark' },
-	{ bg: 'var(--pink-deep)', theme: 'dark' },
+	{ bg: 'var(--fiqh-to)', theme: 'dark' },
 	{ bg: 'var(--swatch--black)', theme: 'dark' }
 ];
 

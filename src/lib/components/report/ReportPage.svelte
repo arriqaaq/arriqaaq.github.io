@@ -147,10 +147,13 @@
 				longSwipesRatio: 0.25,
 				longSwipesMs: 300,
 				preventClicksPropagation: true,
-				// Swipe is detected anywhere inside the swiper container (including the
-				// empty bg around the centered card), not just on the slide itself.
-				touchEventsTarget: 'container',
+				// Inline (homepage hero) confines listeners to the wrapper so vertical
+				// drags on the surrounding area scroll the page; standalone keeps the
+				// looser container target so empty bg around the card still swipes.
+				touchEventsTarget: inline ? 'wrapper' : 'container',
 				touchStartPreventDefault: false,
+				touchAngle: 25,
+				touchReleaseOnEdges: true,
 				coverflowEffect: {
 					modifier: 1.5,
 					rotate: -18,

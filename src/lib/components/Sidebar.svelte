@@ -9,7 +9,7 @@
 			Home: 'home',
 			Writing: 'pen',
 			Blog: 'pen',
-			Magazine: 'pen',
+			Magazine: 'book',
 			About: 'user',
 			Projects: 'folder',
 			Talks: 'mic',
@@ -17,16 +17,18 @@
 			Tags: 'tag',
 			Search: 'search',
 			GitHub: 'github',
+			Tech: 'code',
 			X: 'x',
 			Twitter: 'x',
 			Email: 'mail',
-			Instagram: 'mail',
-			Health: 'folder',
-			Courses: 'folder',
-			'Coding Bootcamp': 'folder',
-			'Letters From The Soul': 'mail',
+			Instagram: 'instagram',
+			WhatsApp: 'whatsapp',
+			Health: 'heart',
+			Courses: 'graduation-cap',
+			'Coding Bootcamp': 'code',
+			'Letters From The Soul': 'feather',
 			Contact: 'mail',
-			'Data & privacy': 'chevron'
+			'Data & privacy': 'shield'
 		};
 		return map[label] ?? 'chevron';
 	}

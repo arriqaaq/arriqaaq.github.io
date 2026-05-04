@@ -16,6 +16,10 @@ navigation:
     mobile: true
   - url: https://www.instagram.com/arriqaaq/
     label: Instagram
+    mobile: true
+  - url: https://chat.whatsapp.com/G9uGLfu3mwCJrvN5KqNDJ7
+    label: WhatsApp
+    mobile: true
   - url: /about/
     label: About
     mobile: true
