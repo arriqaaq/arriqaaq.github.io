@@ -66,5 +66,5 @@ A COVID19 helpline app for Bangalore
 **Information**  
 
 **Email**: arriqaaq@yahoo.com  
-**Website**: [www.arriqaaq.com](www.arriqaaq.com)  
+**Website**: [www.arriqaaq.com](https://www.arriqaaq.com/)  
 **Instagram**: [https://instagram.com/arriqaaq](https://instagram.com/arriqaaq)

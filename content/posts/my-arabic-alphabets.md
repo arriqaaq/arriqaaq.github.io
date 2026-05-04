@@ -67,9 +67,7 @@ The alphabets have been segregated separately so that the kids can understand an
 
 ### ☆ Easy translation
 
-Learn vocabulary with the letters! We've chosen words which are easy to visualise and memorise. What a fun way to learn a new language! Just listen to this cute recording!
-
-<figure class="kg-card kg-video-card"><video src="/media/2022/04/letter.mp4" controls poster="/images/2022/04/5.png" preload="metadata"></video></figure>
+Learn vocabulary with the letters! We've chosen words which are easy to visualise and memorise. What a fun way to learn a new language!
 
 ---
 

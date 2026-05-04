@@ -111,7 +111,7 @@ Tafseer Juz Amma - Google Drive
 
 Tafseer Al Quran by Ustadha Umm Amrah Noora Jukaku (for Sisters only) This is an online course taught in English to non-arabic speaking Muslims and reverts. The motive of this course is to understand the Quran in accordance with the Sunnah. The course will be taught based on a number
 
-![](/favicon.png)ArriqaaqArriqaaq
+ArriqaaqArriqaaq
 
 ![](https://static.ghost.org/v4.0.0/images/publication-cover.jpg)
 

@@ -70,4 +70,4 @@ May Allah grant my parents and entire family hidaayah, and keep me, my husband a
 
 * * *
 
-#[****WeReverts****](/wereverts) is a series of articles on the journey of individuals who have accepted the religion of Islam wholeheartedly, showing our followers that each and every person is unique, inspirational, and relatable. We feature the lives of the wide range of people that were guided to Islam and narrate stories which shows us the real beauty of the religion of Truth, Islam. Enter their lives, and feel connected. There is a revert in all of us!
+#****WeReverts**** is a series of articles on the journey of individuals who have accepted the religion of Islam wholeheartedly, showing our followers that each and every person is unique, inspirational, and relatable. We feature the lives of the wide range of people that were guided to Islam and narrate stories which shows us the real beauty of the religion of Truth, Islam. Enter their lives, and feel connected. There is a revert in all of us!

@@ -112,5 +112,5 @@ We aim to connect aspiring seekers of knowledge with the Quran and also help con
 Information  
 
 **Email**: arriqaaq@yahoo.com  
-**Website**: [www.arriqaaq.com](www.arriqaaq.com)  
+**Website**: [www.arriqaaq.com](https://www.arriqaaq.com/)  
 **Instagram**: [https://instagram.com/arriqaaq](https://instagram.com/arriqaaq)

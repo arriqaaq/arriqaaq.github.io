@@ -105,6 +105,6 @@ So what is our excuse dear sisters? Join us in embarking on this pathway to know
 
 * * *
 
-*#****[Arriqaaq](/wereverts)**** is an online creative space for authentic islamic articles, courses, competitions, arts and crafts, projects that inspire, as well as reflection around education, islam, lifestyle and technology. Check out our educational events on Tafseer, coding and more [****here****](/courses).*
+*#****Arriqaaq**** is an online creative space for authentic islamic articles, courses, competitions, arts and crafts, projects that inspire, as well as reflection around education, islam, lifestyle and technology.*
 
 *And Follow us on [****Instagram****](https://www.instagram.com/arriqaaq/) to stay up to date!*

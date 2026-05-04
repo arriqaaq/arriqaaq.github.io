@@ -208,7 +208,7 @@ The **first prize** was 2500 INR, the **second** was 1500 INR, and the **third**
   
 A few months back we conducted a memorisation and recitation competition based on the poem Al-Haiyyah (written by son of the great author of Sunan Abu Dawood, ibn Abee Dawood As Sijistani). Read more about it here.
 
-[https://www.arriqaaq.com/post/and-when-the-stars-shine](/post/and-when-the-stars-shine)
+_(Read more in our post: "And When The Stars Shine".)_
 
 * * *
 
@@ -232,6 +232,6 @@ Join our journey and be part of our project. You can follow us on [****Instagram
 
 * * *
 
-#[****A****](/wereverts)****rriqaaq**** is an online creative space for authentic islamic articles, courses, competitions, arts and crafts, projects that inspire, as well as reflection around education, islam, lifestyle and technology. Check out our educational events on Tafseer, coding and more [****here****](/courses).
+#****Arriqaaq**** is an online creative space for authentic islamic articles, courses, competitions, arts and crafts, projects that inspire, as well as reflection around education, islam, lifestyle and technology.
 
 And Follow us on [****Instagram****](https://www.instagram.com/arriqaaq/) to stay up to date!

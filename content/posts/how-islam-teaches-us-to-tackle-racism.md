@@ -184,7 +184,7 @@ Let us be that little child. Let us be innocent. Let us be inclusive and toleran
 
 ## **Note:**
 
-I have moved writing islamic articles to a different platform, so this article was published there first. [Arriqaaq](/post/how-islam-teaches-us-to-tackle-racism) is the website. I’ll use medium for tech articles and stuff.
+I have moved writing islamic articles to a different platform, so this article was published there first. [Arriqaaq](/) is the website. I’ll use medium for tech articles and stuff.
 
 # Resources:
 

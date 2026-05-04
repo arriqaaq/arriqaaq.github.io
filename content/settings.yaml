@@ -8,20 +8,25 @@ cover_image: https://static.ghost.org/v4.0.0/images/publication-cover.jpg
 navigation:
   - url: /
     label: Home
+    mobile: true
   - url: /courses/
     label: Courses
   - url: /magazine/
     label: Magazine
+    mobile: true
   - url: https://www.instagram.com/arriqaaq/
     label: Instagram
   - url: /about/
     label: About
+    mobile: true
   - url: /lettersfromthesoul/
     label: Letters From The Soul
+    mobile: true
   - url: https://health.arriqaaq.com/
     label: Health
-  - url: https://www.code.arriqaaq.com/
-    label: Coding Bootcamp
+  - url: https://github.com/arriqaaq
+    label: Tech
+    mobile: true
 secondary_navigation:
   - label: Data & privacy
     url: /privacy/

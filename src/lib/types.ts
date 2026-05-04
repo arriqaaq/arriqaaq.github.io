@@ -47,6 +47,6 @@ export type SiteSettings = {
 	logo: string | null;
 	icon: string | null;
 	cover_image: string | null;
-	navigation: { label: string; url: string }[];
-	secondary_navigation: { label: string; url: string }[];
+	navigation: { label: string; url: string; mobile?: boolean }[];
+	secondary_navigation: { label: string; url: string; mobile?: boolean }[];
 };

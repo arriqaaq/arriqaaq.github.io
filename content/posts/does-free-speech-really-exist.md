@@ -200,7 +200,7 @@ Islam is a religion until the end of time, not just for one era or century. Alla
 ### **The First Constitution In Madinah**
 
   
-An example of tolerance and respect in Islam is depicted through The First Constitution in Madinah. Justice and fairness, upholding the rights of the poor, as well as spending charity to those in need, these principles are a part of our Islamic social structure. In Madinah, the city in which the Prophet established peace between various tribal and faith groups, he negotiated and implemented a written constitution, Sahifat al-Madīnah. The constitution formed the basis of a multi-religious Islamic state in Medina, stating the equal religious and legal rights of each of the Jewish and pagan tribes of Madinah. This constitution implemented the Quranic principle of fairness and justice, offering equal security, mutual defense, legal and civic autonomy. There was no differentiation between a black or a white, nor a rich or poor, the laws were the same irrespective of one's caste, creed, or color. \[Check out our post on how [Islam Teaches Us To Tackle Racism](/post/how-islam-teaches-us-to-tackle-racism) for more\]
+An example of tolerance and respect in Islam is depicted through The First Constitution in Madinah. Justice and fairness, upholding the rights of the poor, as well as spending charity to those in need, these principles are a part of our Islamic social structure. In Madinah, the city in which the Prophet established peace between various tribal and faith groups, he negotiated and implemented a written constitution, Sahifat al-Madīnah. The constitution formed the basis of a multi-religious Islamic state in Medina, stating the equal religious and legal rights of each of the Jewish and pagan tribes of Madinah. This constitution implemented the Quranic principle of fairness and justice, offering equal security, mutual defense, legal and civic autonomy. There was no differentiation between a black or a white, nor a rich or poor, the laws were the same irrespective of one's caste, creed, or color. \[Check out our post on how [Islam Teaches Us To Tackle Racism](/how-islam-teaches-us-to-tackle-racism/) for more\]
 
 ### **Islamic Principle To Not Insult Any Religion**
 
@@ -237,5 +237,5 @@ The West use of Freedom Of Speech is their way to impose their colonial rule and
 - [http://www.theindependentbd.com/post/255446](http://www.theindependentbd.com/post/255446)  
 - [http://thesis.honors.olemiss.edu/774/1/thesis\_connorholeman.pdf](http://thesis.honors.olemiss.edu/774/1/thesis_connorholeman.pdf)  
 - [https://islamqa.info/en/answers/98134/concept-of-democracy-in-islam](https://islamqa.info/en/answers/98134/concept-of-democracy-in-islam)  
-- [https://www.arriqaaq.com/post/how-islam-teaches-us-to-tackle-racism](/post/how-islam-teaches-us-to-tackle-racism)  
+- [https://www.arriqaaq.com/how-islam-teaches-us-to-tackle-racism/](/how-islam-teaches-us-to-tackle-racism/)  
 - [https://gallica.bnf.fr/ark:/12148/bpt6k29365z.texteImage](https://gallica.bnf.fr/ark:/12148/bpt6k29365z.texteImage)

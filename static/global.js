@@ -1,29 +1,6 @@
 (function () {
   'use strict';
 
-  // Tag drawer toggle (mobile / tablet)
-  var toggle = document.querySelector('.topbar-tag-toggle');
-  var panel = document.querySelector('.tag-panel');
-  var backdrop = document.querySelector('.tag-panel-backdrop');
-
-  function openDrawer() {
-    if (!panel) return;
-    panel.classList.add('tag-panel--drawer', 'is-open');
-    if (backdrop) backdrop.classList.add('is-open');
-  }
-  function closeDrawer() {
-    if (!panel) return;
-    panel.classList.remove('is-open');
-    if (backdrop) backdrop.classList.remove('is-open');
-  }
-  if (toggle) toggle.addEventListener('click', function (e) {
-    e.preventDefault();
-    if (panel && panel.classList.contains('is-open')) closeDrawer();
-    else openDrawer();
-  });
-  if (backdrop) backdrop.addEventListener('click', closeDrawer);
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeDrawer(); });
-
   // Active rail item based on pathname
   document.addEventListener('DOMContentLoaded', function () {
     var path = window.location.pathname;

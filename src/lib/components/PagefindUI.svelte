@@ -40,6 +40,12 @@
 		document.head.appendChild(l);
 	}
 
+	function showUnavailableMessage() {
+		if (!mountEl) return;
+		mountEl.innerHTML =
+			'<p style="padding:24px;color:var(--ink-muted);font-size:13px;">Search index is unavailable. Run <code>npm run build</code> and serve the production build (e.g. <code>npm run preview</code>) to enable search.</p>';
+	}
+
 	async function init() {
 		if (initialized) return;
 		await tick(); // wait for {#if open} to mount the dialog so mountEl is bound
@@ -49,7 +55,8 @@
 			await loadScriptOnce(SCRIPT_SRC);
 			const PagefindUI = (window as any).PagefindUI;
 			if (typeof PagefindUI !== 'function') {
-				console.warn('PagefindUI not on window after script load');
+				showUnavailableMessage();
+				initialized = true;
 				return;
 			}
 			new PagefindUI({
@@ -61,12 +68,13 @@
 				autofocus: true
 			});
 			initialized = true;
-			// Focus the input that PagefindUI just rendered
 			await tick();
 			const input = mountEl.querySelector<HTMLInputElement>('input[type="text"]');
 			input?.focus();
 		} catch (err) {
 			console.warn('Pagefind init failed:', err);
+			showUnavailableMessage();
+			initialized = true;
 		}
 	}
 

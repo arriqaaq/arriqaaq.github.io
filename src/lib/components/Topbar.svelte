@@ -11,9 +11,6 @@
 	<button type="button" class="icon-btn topbar-panel-toggle" aria-label="Toggle panel" title="Toggle panel ([)">
 		<Icon name="panel" />
 	</button>
-	<button type="button" class="icon-btn topbar-tag-toggle" aria-label="Topics" title="Topics">
-		<Icon name="tag" />
-	</button>
 	<span class="breadcrumb">{breadcrumb}</span>
 	<div class="topbar-spacer"></div>
 	<button type="button" class="search-trigger" aria-label="Search" onclick={() => (searchOpen = true)}>

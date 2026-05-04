@@ -27,7 +27,7 @@ Education is a progressive discovery of our ignorance. It is the most beautiful 
 
 One of the blessings of Islam is that Allah has given due attention to all of the stages of a person's life. The childhood stage is the most important. Childhood will set the pace for the rest of a person's life, especially, early childhood. If a kid is taught to be upright at this early stage, the kid will likely continue to be upright throughout his/her life. However, if taught corruption, the kid will be corrupt for the rest of his life unless Allāh has mercy on him. If you raise a child properly he will remain on this and you will have fulfilled your responsibility.  
 
-With this goal in mind, and with the blessings of Allah, we started a project called [Memorize](/memorize), which is a series of online hifdh (memorization) competitions organized across the globe to help spread the correct Islamic knowledge and to help direct kids to learn, participate and grow in Islam the way they do outside of it. Vision is a compass that directs one to its right destination. And we aim to direct and connect kids to what is required to be learned of the Islamic creed at their age. Not all have easy access to Islamic education, and not everyone lives in Muslim lands. But we have a powerful tool to swerve through this difficulty, the Internet. And hence, the competitions are held online.  
+With this goal in mind, and with the blessings of Allah, we started a project called **Memorize**, which is a series of online hifdh (memorization) competitions organized across the globe to help spread the correct Islamic knowledge and to help direct kids to learn, participate and grow in Islam the way they do outside of it. Vision is a compass that directs one to its right destination. And we aim to direct and connect kids to what is required to be learned of the Islamic creed at their age. Not all have easy access to Islamic education, and not everyone lives in Muslim lands. But we have a powerful tool to swerve through this difficulty, the Internet. And hence, the competitions are held online.  
 
 > ****Today's Special Moments Are Tomorrow's Memories****
 
@@ -108,7 +108,7 @@ What we learn from history is that we do not learn from history. Many groups fel
   
 Now now now. All you have to do is to STOP doing whatever work you are biting your nail against, lie on a comfy couch, steady yourself, grab some popcorn and keep scrolling down the page.
 
-Click [here](/haiyyahresults) to see the results ([https://www.arriqaaq.com/haiyyahresults](/haiyyahresults))
+_Results were previously published on the website._
 
   
 
@@ -140,5 +140,5 @@ Join our journey and be part of our project. You can follow us on [****Facebook*
 
 ****Note:****
 
-\- To read the poem and its translation, please click [here](/post/and-when-the-stars-shine)  
+\- The poem and its translation were previously published on the website.  
 \- Listen to the beautiful recitation of the poem [here](https://www.youtube.com/watch?v=xQnDkURLh6A&feature=emb_logo)

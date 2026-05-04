@@ -1,22 +1,20 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import { settings } from '$lib/content';
-	import { resolveImage } from '$lib/content';
 	import PostCard from '$lib/components/PostCard.svelte';
+	import PostCardLarge from '$lib/components/PostCardLarge.svelte';
+	import FeaturedHero from '$lib/components/FeaturedHero.svelte';
+	import KnowledgeStack from '$lib/components/KnowledgeStack.svelte';
 	import Newsletter from '$lib/components/Newsletter.svelte';
 
 	let { data } = $props();
 
-	const heroImg = $derived(resolveImage(data.hero?.feature_image, base));
-	const heroDate = $derived(
-		data.hero
-			? new Date(data.hero.published_at).toLocaleDateString(undefined, {
-					month: 'short',
-					day: 'numeric',
-					year: 'numeric'
-				})
-			: ''
-	);
+	const ordered = $derived([...data.featured, ...data.recent]);
+	const heroPost = $derived(ordered[0] ?? null);
+	const cardPosts = $derived(ordered.slice(1, 4));
+	const listPosts = $derived(ordered.slice(4));
+
+	const tagline = 'A creative space for authentic Islamic articles, courses, and reflections on education, lifestyle, and technology.';
 </script>
 
 <svelte:head>
@@ -30,23 +28,9 @@
 		{#if settings.description}
 			<p class="hero-lede">{settings.description}</p>
 		{/if}
-		<div class="hero-cta">
-			<a href="#latest" class="btn btn--primary">Latest writing</a>
-		</div>
 	</div>
 	<div class="hero-right">
-		{#if data.hero}
-			<a href={`${base}/${data.hero.slug}/`} class="hero-card">
-				{#if heroImg}
-					<div class="hero-card-image"><img src={heroImg} alt={data.hero.title} loading="lazy" /></div>
-				{/if}
-				<div class="hero-card-body">
-					<span class="hero-card-eyebrow">Latest</span>
-					<h3 class="hero-card-title">{data.hero.title}</h3>
-					<span class="hero-card-meta">{heroDate} · {data.hero.reading_time} min read</span>
-				</div>
-			</a>
-		{/if}
+		<KnowledgeStack />
 	</div>
 </section>
 
@@ -62,24 +46,35 @@
 	</div>
 </section>
 
-{#if data.featured.length}
-	<section class="featured-section">
-		<small class="related-heading">Featured</small>
-		<div class="feed">
-			{#each data.featured as p}
-				<PostCard post={p} />
+<hr class="section-rule" id="latest" />
+
+{#if heroPost}
+	<FeaturedHero post={heroPost} />
+{/if}
+
+{#if cardPosts.length}
+	<section class="releases">
+		<small class="releases-heading">Latest releases</small>
+		<div class="releases-grid">
+			{#each cardPosts as p}
+				<PostCardLarge post={p} />
 			{/each}
 		</div>
 	</section>
 {/if}
 
-<hr class="section-rule" id="latest" />
-<small class="related-heading">Recent</small>
-<div class="feed">
-	{#each data.recent as p, i}
-		<PostCard post={p} isHero={i === 0} />
-	{/each}
-</div>
+{#if listPosts.length}
+	<section class="intro-list">
+		<aside class="intro-tagline">
+			<p>{tagline}</p>
+		</aside>
+		<div class="intro-list-feed">
+			{#each listPosts as p}
+				<PostCard post={p} />
+			{/each}
+		</div>
+	</section>
+{/if}
 
 {#if data.totalPages > 1}
 	<div class="pagination-wrap">

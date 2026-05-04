@@ -24,7 +24,7 @@ reading_time: 20
 
 In our journey through the study of Fiqh, this gentle wisdom offers a valuable reminder. When we encounter complex topics, there's a natural tendency to lean toward positions we've already embraced. Yet true understanding invites us to momentarily set aside our existing views, creating space to carefully examine both supporting and opposing arguments with equal attention - to be objective in our understanding without having any confirmation bias.
 
-Building on this approach, our [previous](/usul-al-fiqh-made-easy-part-8-what-qiyas/) [articles](/understanding-ijtihaad-part1/) explored various sources of Islamic law, including the fundamental sources like [Quran, Sunnah, and Ijma](/sources-of-al-hukm-quran-sunnah-ijmaa-and-ijtihaad-usul-al-fiqh-made-easy-part-7/). We then turned our focus to [Qiyas](/what-is-qiyas/), which you can read about in detail in our [last article](/what-is-qiyas/).
+Building on this approach, our [previous](/what-is-qiyas/) [articles](/sources-of-al-hukm-quran-sunnah-ijmaa-and-ijtihaad-usul-al-fiqh-made-easy-part-7/) explored various sources of Islamic law, including the fundamental sources like [Quran, Sunnah, and Ijma](/sources-of-al-hukm-quran-sunnah-ijmaa-and-ijtihaad-usul-al-fiqh-made-easy-part-7/). We then turned our focus to [Qiyas](/what-is-qiyas/), which you can read about in detail in our [last article](/what-is-qiyas/).
 
 ::image{src="/images/2025/04/Screenshot-2025-04-06-at-2.36.25-PM-1.png" width=full}
 

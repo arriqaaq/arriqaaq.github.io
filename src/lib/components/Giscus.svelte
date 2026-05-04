@@ -5,7 +5,7 @@
 	type Props = { mapping?: string };
 	let { mapping = 'pathname' }: Props = $props();
 
-	let mountEl: HTMLDivElement;
+	let mountEl: HTMLDivElement | undefined = $state();
 
 	onMount(() => {
 		if (!GISCUS.repo || !GISCUS.repoId || !GISCUS.categoryId) return;
@@ -25,7 +25,7 @@
 		s.dataset.theme = 'light';
 		s.dataset.lang = 'en';
 		s.dataset.loading = 'lazy';
-		mountEl.appendChild(s);
+		mountEl?.appendChild(s);
 	});
 </script>
 

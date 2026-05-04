@@ -273,7 +273,7 @@ In the next article inshaAllah, we will go over what Istishaab means
 
 📝 **Overview: Exploring the primary sources of Islamic law - Quran, Sunnah, Ijmaa, and Ijtihaad.**
 
-8️⃣ [**Understanding Ijtihaad (Part 1)**](/understanding-ijtihaad-part1/)
+8️⃣ [**Understanding Ijtihaad (Part 1)**](/sources-of-al-hukm-quran-sunnah-ijmaa-and-ijtihaad-usul-al-fiqh-made-easy-part-7/)
 
 📝 **Overview: Introduction to Ijtihaad, its process, and its role in deriving legal rulings.**
 

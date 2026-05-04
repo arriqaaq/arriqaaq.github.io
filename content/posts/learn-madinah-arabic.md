@@ -98,5 +98,5 @@ Online through Zoom (Will be posted on the above channels)
 ## 👋 **Information**
 
 **Email**: arriqaaq@yahoo.com  
-**Website**: [www.arriqaaq.com](www.arriqaaq.com)  
+**Website**: [www.arriqaaq.com](https://www.arriqaaq.com/)  
 **Instagram**: [https://instagram.com/arriqaaq](https://instagram.com/arriqaaq)

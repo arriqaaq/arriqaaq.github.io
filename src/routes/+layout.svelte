@@ -20,4 +20,3 @@
 		<Footer />
 	</main>
 </div>
-<div class="tag-panel-backdrop"></div>

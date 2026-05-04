@@ -13,7 +13,6 @@
 </script>
 
 <footer class="footer">
-	<hr class="section-rule" />
 	<div class="footer-row">
 		<span class="footer-meta">© {year} {settings.title}</span>
 		<div class="footer-social">

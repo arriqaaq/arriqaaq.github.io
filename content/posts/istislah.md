@@ -15,7 +15,7 @@ reading_time: 15
 
 ::bookmark{url="/tag/fiqh/" title="Fiqh - Arriqaaq" description="Usul Al Fiqh Series Arriqaaq" author="Arriqaaq" publisher="Arriqaaq" icon="/images/icon/Flower-Fern-Business-logo-2-8.png" thumbnail="/images/thumbnail/Screenshot-2025-11-04-at-8.17.54---AM.png"}
 
-In our previous articles, we explored the various sources of Islamic rulings. We have covered [Quran, Sunnah, and Ijma](/understanding-ijtihaad-part1/) as the primary sources, and examined [Amal Ahlul Madina](/understanding-ijtihaad-part1/), [Qiyas](/what-is-qiyas/), [Istihsan](/istihsan/), and [Istishab](/istishab/) as forms of Ijtihad. Building on this understanding, we now turn our attention to another important type of Ijtihaad: الاستصلاح (Istislah - consideration of public interest).
+In our previous articles, we explored the various sources of Islamic rulings. We have covered [Quran, Sunnah, and Ijma](/sources-of-al-hukm-quran-sunnah-ijmaa-and-ijtihaad-usul-al-fiqh-made-easy-part-7/) as the primary sources, and examined [Amal Ahlul Madina](/sources-of-al-hukm-quran-sunnah-ijmaa-and-ijtihaad-usul-al-fiqh-made-easy-part-7/), [Qiyas](/what-is-qiyas/), [Istihsan](/istihsan/), and [Istishab](/istishab/) as forms of Ijtihad. Building on this understanding, we now turn our attention to another important type of Ijtihaad: الاستصلاح (Istislah - consideration of public interest).
 
 ::image{src="/images/2025/05/image.png"}
 

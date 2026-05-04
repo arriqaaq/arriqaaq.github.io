@@ -57,6 +57,7 @@
 				href={rebase(item.url)}
 				class="rail-btn"
 				class:active={isActive(item.url)}
+				class:rail-btn--desktop-only={!item.mobile}
 				title={item.label}
 				aria-label={item.label}
 				target={isExternal(item.url) ? '_blank' : undefined}
@@ -71,6 +72,7 @@
 			<a
 				href={rebase(item.url)}
 				class="rail-btn"
+				class:rail-btn--desktop-only={!item.mobile}
 				title={item.label}
 				aria-label={item.label}
 				target={isExternal(item.url) ? '_blank' : undefined}
