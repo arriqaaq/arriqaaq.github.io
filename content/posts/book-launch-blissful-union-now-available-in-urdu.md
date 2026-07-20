@@ -1,15 +1,16 @@
 ---
 title: "Book Launch: Blissful Union is Now Available in Urdu"
-date: 2026-07-20T10:00:00+05:30
-draft: false
-description: "We are delighted to announce that Blissful Union by Dr. Syed Nooruzuha Barmaver is now available in Urdu."
+slug: "We are delighted to announce that Blissful Union by Dr. Syed Nooruzuha Barmaver is now available in Urdu."
+type: post
+published: 2026-07-20T10:00:00+05:30
+excerpt: The Blissful Union available in Urdu
+feature_image: /images/2026/04/blissful-union-cover.png
 tags:
-  - Books
-  - Marriage
-  - Family
-  - Urdu
+  - book
 authors:
-  - Arriqaaq
+  - arriqaaq
+featured: false
+reading_time: 5
 ---
 
 > **"And among His signs is that He created for you spouses from among yourselves that you may find tranquillity in them; and He placed between you affection and mercy. Indeed, in that are signs for a people who reflect."**
@@ -81,17 +82,11 @@ If even one family grows closer to Allah because of what they learn from this bo
 
 * * *
 
-## 🤲 We Ask Allah for Acceptance
-
-We ask Allah ﷻ to reward **Dr. Syed Nooruzuha Barmaver**, everyone involved in translating, reviewing, editing, designing, and publishing this edition, and every reader who supports the spread of authentic Islamic knowledge.
-
-May He place barakah in this work, make it a means of strengthening Muslim families, and grant it acceptance among the Ummah.
+We are truly grateful to finally share this Urdu edition with you.
 
 > **"The best of you are those who are best to their wives."**
 >
 > **— Jāmiʿ al-Tirmidhī**
-
-We are truly grateful to finally share this Urdu edition with you.
 
 May Allah ﷻ make it a source of lasting benefit in this life and a means of reward in the Hereafter.
 
