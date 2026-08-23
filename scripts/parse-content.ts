@@ -18,8 +18,12 @@ import remarkParse from 'remark-parse';
 import remarkDirective from 'remark-directive';
 import remarkRehype from 'remark-rehype';
 import rehypeRaw from 'rehype-raw';
+import rehypeHighlight from 'rehype-highlight';
+import { all as allLanguages } from 'lowlight';
 import rehypeStringify from 'rehype-stringify';
 import remarkGhostCards from './remark-ghost-cards.js';
+import remarkEmbedTokens, { createEmbedState, type EmbedState } from './remark-embed-tokens.js';
+import rehypeHeadingIds, { createHeadingState, type TocEntry } from './rehype-heading-ids.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -54,15 +58,24 @@ type ParsedPost = {
 	primary_tag: string | null;
 	authors: string[];
 	primary_author: string | null;
+	toc: TocEntry[];
+	words: number;
+	diagram_count: number;
+	widgets: string[];
 };
 
-const processor = unified()
-	.use(remarkParse)
-	.use(remarkDirective)
-	.use(remarkGhostCards)
-	.use(remarkRehype, { allowDangerousHtml: true })
-	.use(rehypeRaw)
-	.use(rehypeStringify, { allowDangerousHtml: true });
+function createProcessor(embedState: EmbedState, headingState: { toc: TocEntry[] }) {
+	return unified()
+		.use(remarkParse)
+		.use(remarkDirective)
+		.use(remarkGhostCards)
+		.use(remarkEmbedTokens, embedState)
+		.use(remarkRehype, { allowDangerousHtml: true })
+		.use(rehypeRaw)
+		.use(rehypeHighlight, { languages: allLanguages, detect: false })
+		.use(rehypeHeadingIds, headingState)
+		.use(rehypeStringify, { allowDangerousHtml: true });
+}
 
 function readingTime(text: string): number {
 	const words = text.split(/\s+/).filter(Boolean).length;
@@ -89,16 +102,55 @@ function htmlToPlaintext(html: string): string {
 		.trim();
 }
 
-async function parseFile(file: string): Promise<{ fm: any; html: string; plaintext: string }> {
+function countWords(html: string): number {
+	return html
+		.replace(/<pre[\s\S]*?<\/pre>/g, ' ')
+		.replace(/<svg[\s\S]*?<\/svg>/g, ' ')
+		.replace(/<[^>]+>/g, ' ')
+		.replace(/&[a-z#0-9]+;/gi, ' ')
+		.replace(/\s+/g, ' ')
+		.trim()
+		.split(' ')
+		.filter(Boolean).length;
+}
+
+// Strict leftover scan — only our token shapes, so legacy bracket prose never trips it.
+const LEFTOVER = /\[\[(?:SVG|WIDGET):[a-z0-9-]+\]\]/g;
+
+type ParsedFile = {
+	fm: any;
+	html: string;
+	plaintext: string;
+	toc: TocEntry[];
+	words: number;
+	diagram_count: number;
+	widgets: string[];
+	embedErrors: string[];
+};
+
+async function parseFile(file: string): Promise<ParsedFile> {
 	const raw = readFileSync(file, 'utf8');
 	const parsed = matter(raw);
+	const embedState = createEmbedState();
+	const headingState = createHeadingState();
+	const processor = createProcessor(embedState, headingState);
 	const tree = await processor.run(processor.parse(parsed.content));
 	const html = processor.stringify(tree as any).toString();
 	const plaintext = htmlToPlaintext(html);
-	return { fm: parsed.data, html, plaintext };
+	const leftovers = html.match(LEFTOVER) ?? [];
+	return {
+		fm: parsed.data,
+		html,
+		plaintext,
+		toc: headingState.toc,
+		words: countWords(html),
+		diagram_count: embedState.usedSvgs.length,
+		widgets: embedState.mounts.map((m) => m.name),
+		embedErrors: [...embedState.errors, ...leftovers]
+	};
 }
 
-async function readMdDir(dir: string): Promise<{ slug: string; fm: any; html: string; plaintext: string }[]> {
+async function readMdDir(dir: string): Promise<({ slug: string } & ParsedFile)[]> {
 	if (!existsSync(dir)) return [];
 	const files = readdirSync(dir).filter((f) => f.endsWith('.md'));
 	const out = [];
@@ -176,7 +228,7 @@ async function main() {
 	const postFiles = await readMdDir(POSTS_DIR);
 	const pageFiles = await readMdDir(PAGES_DIR);
 
-	function buildPost(rec: { slug: string; fm: any; html: string; plaintext: string }): ParsedPost {
+	function buildPost(rec: { slug: string } & ParsedFile): ParsedPost {
 		const fm = rec.fm;
 		const tagSlugs: string[] = (fm.tags ?? []).filter((s: string) => tagBySlug.has(s));
 		const authorSlugs: string[] = (fm.authors ?? []).filter((s: string) => authorBySlug.has(s));
@@ -212,8 +264,21 @@ async function main() {
 			tags: tagIds,
 			primary_tag: tagIds[0] ?? null,
 			authors: authorIds,
-			primary_author: authorIds[0] ?? null
+			primary_author: authorIds[0] ?? null,
+			toc: rec.toc,
+			words: rec.words,
+			diagram_count: rec.diagram_count,
+			widgets: rec.widgets
 		};
+	}
+
+	// Fail the build loudly on unresolved/unknown [[SVG:…]]/[[WIDGET:…]] tokens.
+	const embedFailures = [...postFiles, ...pageFiles]
+		.filter((r) => r.embedErrors.length > 0)
+		.map((r) => `  ${r.slug}: ${r.embedErrors.join(', ')}`);
+	if (embedFailures.length > 0) {
+		console.error('Unresolved embed tokens:\n' + embedFailures.join('\n'));
+		process.exit(1);
 	}
 
 	const posts = postFiles.map(buildPost).sort((a, b) =>

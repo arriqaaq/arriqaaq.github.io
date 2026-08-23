@@ -39,6 +39,10 @@ export type Post = {
 	primary_tag: string | null;
 	authors: string[];
 	primary_author: string | null;
+	toc: { id: string; text: string }[];
+	words: number;
+	diagram_count: number;
+	widgets: string[];
 };
 
 export type SiteSettings = {

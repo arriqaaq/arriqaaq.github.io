@@ -29,6 +29,19 @@
 
 <article class="reading {themeClass(primaryTagSlug)}" data-pagefind-body>
 	<PostHeader post={data.post} />
+	{#if isPost && data.post.toc?.length > 1}
+		<nav class="toc" aria-label="Contents" data-pagefind-ignore>
+			<h2 class="toc-title">Contents</h2>
+			<ol>
+				{#each data.post.toc as entry, i (entry.id)}
+					<li>
+						<span class="toc-n">{String(i + 1).padStart(2, '0')}</span>
+						<a href={`#${entry.id}`}>{entry.text}</a>
+					</li>
+				{/each}
+			</ol>
+		</nav>
+	{/if}
 	<div class="reading-body">
 		{@html data.html}
 	</div>

@@ -1378,3 +1378,72 @@ img { max-width: 100%; height: auto; display: block; }
 @media (max-width: 700px) {
   .section-header.has-rail .section-rail { display: none; }
 }
+
+/* ============================================================
+   Markdown embed pipeline — [[SVG:name]] / [[WIDGET:name]] figures,
+   Contents card, byline stats, build-time highlight.js classes.
+   ============================================================ */
+
+/* Embedded figures break out to the wide grid track like kg-width-wide. */
+.reading-body > .fig { grid-column: wide; max-width: 100%; margin: 2rem 0; }
+.fig-dgm, .fig-cmp, .fig-widget {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px 18px 12px;
+}
+.dgm-svg { display: block; width: 100%; height: auto; }
+.fig svg text { font-family: var(--font-ui); }
+.cmp-wrap { overflow-x: auto; }
+.reading-body .missing {
+  grid-column: main;
+  border: 2px dashed var(--red);
+  color: var(--red);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  margin: 1.6em 0;
+}
+
+/* Contents card — numbered TOC harvested from h2s at build time. */
+.toc {
+  max-width: var(--reading-w);
+  margin: 0 auto 48px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+}
+.toc-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--accent-deep);
+  margin: 0 0 10px;
+}
+.toc ol { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 32px; }
+.toc li { display: flex; gap: 10px; align-items: baseline; break-inside: avoid; padding: 3px 0; }
+.toc-n { font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--accent-deep); font-variant-numeric: tabular-nums; }
+.toc a { font-size: 14px; color: var(--ink); }
+.toc a:hover { color: var(--accent-deep); text-decoration: underline; }
+@media (max-width: 600px) { .toc ol { columns: 1; } }
+
+/* Byline stats (~N words · K diagrams) appended to the author line. */
+.reading-stats { color: var(--ink-faint); }
+.reading-stats::before { content: '·'; margin-right: 12px; color: var(--ink-faint); }
+
+/* highlight.js theme for the dark pre surface (pre = ink bg, cream text). */
+.reading-body .hljs-comment, .reading-body .hljs-quote { color: #9a9a8f; font-style: italic; }
+.reading-body .hljs-keyword, .reading-body .hljs-selector-tag, .reading-body .hljs-literal { color: #f59e0b; font-weight: 600; }
+.reading-body .hljs-type, .reading-body .hljs-class .hljs-title, .reading-body .hljs-title.class_, .reading-body .hljs-attr { color: #fbbf24; }
+.reading-body .hljs-function .hljs-title, .reading-body .hljs-title.function_ { color: #7dd3fc; }
+.reading-body .hljs-string, .reading-body .hljs-regexp { color: #fde68a; }
+.reading-body .hljs-number, .reading-body .hljs-symbol { color: #fca5a5; }
+.reading-body .hljs-meta, .reading-body .hljs-doctag { color: #67e8f9; }
+.reading-body .hljs-built_in, .reading-body .hljs-builtin-name { color: #67e8f9; }
+.reading-body .hljs-variable, .reading-body .hljs-template-variable, .reading-body .hljs-params { color: inherit; }
+.reading-body .hljs-emphasis { font-style: italic; }
+.reading-body .hljs-strong { font-weight: 700; }
