@@ -1,14 +1,13 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import PostCard from '$lib/components/PostCard.svelte';
+	import Seo from '$lib/components/Seo.svelte';
 	import { settings } from '$lib/content';
 
 	let { data } = $props();
 </script>
 
-<svelte:head>
-	<title>Page {data.page} — {settings.title}</title>
-</svelte:head>
+<Seo title={`Page ${data.page} — ${settings.title}`} />
 
 <header class="archive-header">
 	<small class="related-heading">Page {data.page} of {data.totalPages}</small>

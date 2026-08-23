@@ -1,14 +1,15 @@
 <script lang="ts">
 	import PostCard from '$lib/components/PostCard.svelte';
+	import Seo from '$lib/components/Seo.svelte';
 	import { settings } from '$lib/content';
 	import { themeClass } from '$lib/themeForTag';
 	let { data } = $props();
 </script>
 
-<svelte:head>
-	<title>{data.tag.name} — {settings.title}</title>
-	{#if data.tag.description}<meta name="description" content={data.tag.description} />{/if}
-</svelte:head>
+<Seo
+	title={`${data.tag.name} — ${settings.title}`}
+	description={data.tag.description ?? settings.description}
+/>
 
 <div class={themeClass(data.tag.slug)}>
 	<header class="archive-header">

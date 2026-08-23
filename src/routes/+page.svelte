@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import { settings, getReport } from '$lib/content';
+	import { settings, authors, getReport } from '$lib/content';
+	import { SITE_URL } from '$lib/site';
+	import Seo from '$lib/components/Seo.svelte';
 	import PostCard from '$lib/components/PostCard.svelte';
 	import PostCardLarge from '$lib/components/PostCardLarge.svelte';
 	import FeaturedHero from '$lib/components/FeaturedHero.svelte';
@@ -22,12 +24,25 @@
 	const heroPost = $derived(ordered[0] ?? null);
 	const cardPosts = $derived(ordered.slice(1, 4));
 	const listPosts = $derived(ordered.slice(4));
+
+	const jsonLd = [
+		{
+			'@context': 'https://schema.org',
+			'@type': 'WebSite',
+			name: settings.title,
+			url: `${SITE_URL}/`,
+			description: settings.description
+		},
+		...authors.slice(0, 1).map((a) => ({
+			'@context': 'https://schema.org',
+			'@type': 'Person',
+			name: a.name,
+			url: `${SITE_URL}/author/${a.slug}/`
+		}))
+	];
 </script>
 
-<svelte:head>
-	<title>{settings.title}</title>
-	<meta name="description" content={settings.description} />
-</svelte:head>
+<Seo {jsonLd} />
 
 {#if introReport}
 	{@const firstChapter =

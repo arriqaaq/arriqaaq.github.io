@@ -22,6 +22,7 @@ const config = {
 			base: basePath
 		},
 		prerender: {
+			origin: 'https://arriqaaq.com',
 			handleHttpError: 'warn',
 			handleMissingId: 'warn'
 		}

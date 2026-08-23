@@ -4,14 +4,16 @@
 	import { resolveImage } from '$lib/content';
 	import { settings } from '$lib/content';
 
+	import Seo from '$lib/components/Seo.svelte';
+
 	let { data } = $props();
 	const avatar = $derived(resolveImage(data.author.profile_image, base));
 </script>
 
-<svelte:head>
-	<title>{data.author.name} — {settings.title}</title>
-	{#if data.author.bio}<meta name="description" content={data.author.bio} />{/if}
-</svelte:head>
+<Seo
+	title={`${data.author.name} — ${settings.title}`}
+	description={data.author.bio ?? settings.description}
+/>
 
 <header class="archive-header archive-header--author">
 	{#if avatar}

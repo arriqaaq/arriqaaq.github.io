@@ -7,7 +7,7 @@
 		"migrate": "tsx scripts/migrate-to-markdown.ts",
 		"parse": "tsx scripts/parse-content.ts",
 		"fetch-images": "tsx scripts/fetch-drive-images.ts",
-		"prepare-content": "npm run parse",
+		"prepare-content": "npm run parse && tsx scripts/generate-agent-skills.ts",
 		"dev": "npm run prepare-content && vite dev",
 		"build": "npm run prepare-content && vite build && pagefind --site build",
 		"preview": "vite preview",

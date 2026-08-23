@@ -47,6 +47,7 @@ export type Post = {
 
 export type SiteSettings = {
 	title: string;
+	url: string;
 	description: string;
 	logo: string | null;
 	icon: string | null;

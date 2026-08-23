@@ -35,7 +35,17 @@ const AUTHORS_FILE = resolve(ROOT, 'content/authors.yaml');
 const SETTINGS_FILE = resolve(ROOT, 'content/settings.yaml');
 const OUT_DIR = resolve(ROOT, 'src/lib/generated');
 
-const RESERVED_SLUGS = new Set(['tag', 'author', 'page', 'rss', 'report']);
+const RESERVED_SLUGS = new Set([
+	'tag',
+	'author',
+	'page',
+	'rss',
+	'report',
+	'sitemap.xml',
+	'rss.xml',
+	'llms.txt',
+	'llms-full.txt'
+]);
 
 type ParsedPost = {
 	id: string;
@@ -119,6 +129,7 @@ const LEFTOVER = /\[\[(?:SVG|WIDGET):[a-z0-9-]+\]\]/g;
 
 type ParsedFile = {
 	fm: any;
+	source: string;
 	html: string;
 	plaintext: string;
 	toc: TocEntry[];
@@ -140,6 +151,7 @@ async function parseFile(file: string): Promise<ParsedFile> {
 	const leftovers = html.match(LEFTOVER) ?? [];
 	return {
 		fm: parsed.data,
+		source: parsed.content,
 		html,
 		plaintext,
 		toc: headingState.toc,
@@ -202,6 +214,7 @@ async function main() {
 	const tagsRaw = loadYaml<Record<string, any>>(TAGS_FILE, {});
 	const authorsRaw = loadYaml<Record<string, any>>(AUTHORS_FILE, {});
 	const settingsRaw = loadYaml<any>(SETTINGS_FILE, {});
+	const siteUrl = String(settingsRaw.url ?? 'https://arriqaaq.com').replace(/\/+$/, '');
 
 	const tags = Object.entries(tagsRaw).map(([slug, t]: [string, any]) => ({
 		id: deterministicId('tag:' + slug),
@@ -291,6 +304,33 @@ async function main() {
 	const tagsOut = tags.filter((t) => t.post_count > 0).sort((a, b) => b.post_count - a.post_count);
 
 	const postBySlugMap = new Map(posts.map((p) => [p.slug, p]));
+	const pageBySlugMap = new Map(pages.map((p) => [p.slug, p]));
+
+	// Markdown mirrors: raw frontmatter-stripped source with a small metadata
+	// header, keyed by slug. Emitted as its own JSON so only build-time
+	// endpoints import it — never the client bundle.
+	const markdown: Record<string, string> = {};
+	for (const rec of [...postFiles, ...pageFiles]) {
+		const doc = postBySlugMap.get(rec.slug) ?? pageBySlugMap.get(rec.slug);
+		if (!doc) continue;
+		const tagNames = ((rec.fm.tags ?? []) as string[])
+			.map((s) => tagBySlug.get(s)?.name)
+			.filter(Boolean);
+		const authorName = rec.fm.authors?.[0]
+			? (authorBySlug.get(rec.fm.authors[0])?.name ?? null)
+			: null;
+		const header = [
+			'---',
+			`title: ${JSON.stringify(doc.title)}`,
+			`canonical: ${siteUrl}/${doc.slug}/`,
+			`published: ${doc.published_at}`,
+			`updated: ${doc.updated_at}`,
+			tagNames.length ? `tags: [${tagNames.map((n) => JSON.stringify(n)).join(', ')}]` : null,
+			authorName ? `author: ${JSON.stringify(authorName)}` : null,
+			'---'
+		].filter(Boolean);
+		markdown[doc.slug] = `${header.join('\n')}\n\n# ${doc.title}\n\n${rec.source.trim()}\n`;
+	}
 
 	function readReportManifests(dir: string): { file: string; data: any }[] {
 		if (!existsSync(dir)) return [];
@@ -491,6 +531,7 @@ async function main() {
 
 	const settings = {
 		title: settingsRaw.title ?? 'Site',
+		url: siteUrl,
 		description: settingsRaw.description ?? '',
 		logo: settingsRaw.logo ?? null,
 		icon: settingsRaw.icon ?? null,
@@ -505,6 +546,7 @@ async function main() {
 	writeFileSync(resolve(OUT_DIR, 'authors.json'), JSON.stringify(authors, null, '\t'));
 	writeFileSync(resolve(OUT_DIR, 'settings.json'), JSON.stringify(settings, null, '\t'));
 	writeFileSync(resolve(OUT_DIR, 'reports.json'), JSON.stringify(reports, null, '\t'));
+	writeFileSync(resolve(OUT_DIR, 'markdown.json'), JSON.stringify(markdown, null, '\t'));
 
 	console.log(
 		`Parsed: ${posts.length} posts, ${pages.length} pages, ${tagsOut.length} tags, ${authors.length} authors, ${reports.length} reports`

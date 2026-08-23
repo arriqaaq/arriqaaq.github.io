@@ -1,3 +1,10 @@
-# allow crawling everything by default
+# Content signals (https://contentsignals.org/):
+# search — collect content for search results
+# ai-input — use content as AI input (RAG/grounding/answers)
+# ai-train — use content to train or fine-tune AI models
+
 User-agent: *
-Disallow:
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
+Allow: /
+
+Sitemap: https://arriqaaq.com/sitemap.xml
