@@ -24,9 +24,11 @@
 	} = $props();
 
 	const canonical = $derived(SITE_URL + page.url.pathname);
-	const ogImage = $derived(
-		image ? (image.startsWith('http') ? image : SITE_URL + image) : null
-	);
+	// Fall back to the site logo so every page has an og:image.
+	const ogImage = $derived.by(() => {
+		const src = image ?? settings.logo;
+		return src ? (src.startsWith('http') ? src : SITE_URL + src) : null;
+	});
 	// A literal closing script tag may not appear inside the markup — build it
 	// by concatenation; escape '<' inside the JSON payload.
 	const ldScript = $derived(
@@ -57,7 +59,7 @@
 	{#if updatedAt}
 		<meta property="article:modified_time" content={updatedAt} />
 	{/if}
-	<meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+	<meta name="twitter:card" content={image ? 'summary_large_image' : 'summary'} />
 	<meta name="twitter:title" content={title} />
 	<meta name="twitter:description" content={description} />
 	{#if ogImage}

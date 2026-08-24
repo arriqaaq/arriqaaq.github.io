@@ -1,0 +1,4 @@
+# Applies to static-asset responses only (Function responses set their own
+# headers in functions/_middleware.js).
+/_app/immutable/*
+  Cache-Control: public, immutable, max-age=31536000

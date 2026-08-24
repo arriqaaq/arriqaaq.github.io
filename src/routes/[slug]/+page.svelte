@@ -34,6 +34,21 @@
 					wordCount: data.post.words,
 					url: postUrl(data.post.slug),
 					mainEntityOfPage: postUrl(data.post.slug),
+					publisher: {
+						'@type': 'Organization',
+						name: settings.title,
+						url: `${SITE_URL}/`,
+						...(settings.logo
+							? {
+									logo: {
+										'@type': 'ImageObject',
+										url: settings.logo.startsWith('http')
+											? settings.logo
+											: SITE_URL + settings.logo
+									}
+								}
+							: {})
+					},
 					...(data.post.feature_image
 						? {
 								image: data.post.feature_image.startsWith('http')

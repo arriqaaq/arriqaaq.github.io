@@ -126,6 +126,11 @@ Still enforce these (the corpus is human, keep it that way):
 - Vary sentence length. The existing posts mix long flowing sentences with
   short ones; an even mid-length cadence reads as AI.
 
+For the full write → verify → publish pipeline (statistical lint, prose
+pass, frontmatter validation, confirm-before-push), use the `blog-publish`
+skill with this repo's `.claude/blog-publish.config.md`; this skill remains
+the voice authority it defers to.
+
 ## Checklist before saving
 
 1. Frontmatter complete and valid YAML; `reading_time` estimated.
