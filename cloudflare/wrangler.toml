@@ -1,0 +1,8 @@
+# Deploy with: npx wrangler deploy -c cloudflare/wrangler.toml
+# Requires arriqaaq.com to be an active zone on the Cloudflare account
+# (see cloudflare/README.md for the one-time onboarding steps).
+name = "arriqaaq-markdown-negotiation"
+main = "markdown-negotiation-worker.js"
+compatibility_date = "2026-08-01"
+
+routes = [{ pattern = "arriqaaq.com/*", zone_name = "arriqaaq.com" }]

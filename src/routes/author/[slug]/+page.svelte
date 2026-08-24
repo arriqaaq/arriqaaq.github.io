@@ -13,6 +13,7 @@
 <Seo
 	title={`${data.author.name} — ${settings.title}`}
 	description={data.author.bio ?? settings.description}
+	markdownAlt
 />
 
 <header class="archive-header archive-header--author">

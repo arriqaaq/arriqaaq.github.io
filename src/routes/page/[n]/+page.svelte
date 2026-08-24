@@ -7,7 +7,7 @@
 	let { data } = $props();
 </script>
 
-<Seo title={`Page ${data.page} — ${settings.title}`} />
+<Seo title={`Page ${data.page} — ${settings.title}`} markdownAlt />
 
 <header class="archive-header">
 	<small class="related-heading">Page {data.page} of {data.totalPages}</small>

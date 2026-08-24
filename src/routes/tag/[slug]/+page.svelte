@@ -9,6 +9,7 @@
 <Seo
 	title={`${data.tag.name} — ${settings.title}`}
 	description={data.tag.description ?? settings.description}
+	markdownAlt
 />
 
 <div class={themeClass(data.tag.slug)}>

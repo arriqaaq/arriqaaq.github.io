@@ -15,6 +15,7 @@ export function GET() {
 		'## For agents',
 		'',
 		`- Every post and page has a markdown mirror at \`${SITE_URL}/<slug>/index.md\`.`,
+		`- The home page and listing pages (tag, author, pagination) are mirrored too — append \`index.md\` to any page URL.`,
 		`- Full corpus in one file: [llms-full.txt](${SITE_URL}/llms-full.txt)`,
 		`- URL inventory: [sitemap.xml](${SITE_URL}/sitemap.xml)`,
 		`- Feed: [rss.xml](${SITE_URL}/rss.xml)`,

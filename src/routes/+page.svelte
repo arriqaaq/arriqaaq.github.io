@@ -42,7 +42,7 @@
 	];
 </script>
 
-<Seo {jsonLd} />
+<Seo {jsonLd} markdownAlt />
 
 {#if introReport}
 	{@const firstChapter =
